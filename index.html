@@ -89,6 +89,11 @@ table thead tr.bg-gray-200 th {
     <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="escritorio">Escritório</button>
 </li>
 
+
+<li class="mr-1">
+    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="epiConsumo">Epi-Consumo</button>
+</li>
+
 </ul>
         </div>
 
@@ -379,6 +384,33 @@ table thead tr.bg-gray-200 th {
                 </tr>
             </thead>
             <tbody id="escritorioTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Epi-Consumo -->
+<div id="epiConsumo" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">Epi-Consumo</h2>
+
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+        <input id="responsibleEpiConsumo" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+    </div>
+
+    <div class="overflow-x-auto">
+        <table id="epiConsumoTable" class="min-w-full table-auto">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2 text-left">Código SMAR</th>
+                    <th class="px-4 py-2 text-left">Descrição completa</th>
+                    <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                    <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                    <th class="px-4 py-2 text-left">Consumo Médio</th>
+                    <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                </tr>
+            </thead>
+            <tbody id="epiConsumoTableBody"></tbody>
         </table>
     </div>
 </div>
@@ -1483,6 +1515,43 @@ impressos: [
     { codigo: "1 05 01 0178 0", descricao: "Tinta para carimbo automático - cor preto - aproxima. 30ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
     { codigo: "1 05 01 0091 0", descricao: "Tinta para carimbo azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
 ],
+epiConsumo: [
+{ codigo: "1 06 04 0023 2", descricao: "Avental de proteção em vinil", unidade: "Unidade", saldo: 2, consumo: 2, sugestao: 0 },
+{ codigo: "1 06 04 0014 3", descricao: "Bota borracha branca cano curto - nº 34", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0015 1", descricao: "Bota borracha branca cano curto - nº 35", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0016 0", descricao: "Bota borracha branca cano curto - nº 36", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0017 8", descricao: "Bota borracha branca cano curto - nº 37", unidade: "Par", saldo: 0, consumo: 1, sugestao: 1 },
+{ codigo: "1 06 04 0018 6", descricao: "Bota borracha branca cano curto - nº 38", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0008 9", descricao: "Bota borracha branca cano curto - nº 39", unidade: "Par", saldo: 0, consumo: 1, sugestao: 1 },
+{ codigo: "1 06 04 0009 7", descricao: "Bota borracha branca cano curto - nº 40", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0010 0", descricao: "Bota borracha branca cano curto - nº 41", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0019 4", descricao: "Bota borracha branca cano curto - nº 42", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0021 6", descricao: "Bota borracha branca cano curto - nº 43", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0022 4", descricao: "Bota borracha branca cano curto - nº 44", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0020 8", descricao: "Bota borracha branca cano curto - nº 45", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0024 0", descricao: "Luva de segurança em borracha cano longo PP", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0025 9", descricao: "Luva de segurança em borracha cano longo M", unidade: "Par", saldo: 0, consumo: 2, sugestao: 2 },
+{ codigo: "1 06 04 0026 7", descricao: "Luva de segurança em borracha cano longo G", unidade: "Par", saldo: 0, consumo: 2, sugestao: 2 },
+{ codigo: "1 06 04 0027 5", descricao: "Luva de segurança em borracha cano longo EG", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0025 7", descricao: "Luva de borracha com forro cano curto pequena", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0026 5", descricao: "Luva de borracha com forro cano curto média", unidade: "Par", saldo: 0, consumo: 2, sugestao: 2 },
+{ codigo: "1 03 01 0027 3", descricao: "Luva de borracha com forro cano curto grande", unidade: "Par", saldo: 0, consumo: 2, sugestao: 2 },
+{ codigo: "1 03 01 0029 0", descricao: "Luva de borracha com forro cano curto extra grande", unidade: "Par", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0004 6", descricao: "Jaleco profissional em tecido - PP", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0003 8", descricao: "Jaleco profissional em tecido - P", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0002 0", descricao: "Jaleco profissional em tecido - M", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0005 4", descricao: "Jaleco profissional em tecido - G", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0006 2", descricao: "Jaleco profissional em tecido - GG", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0007 0", descricao: "Jaleco profissional em tecido - EG", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0067 4", descricao: "Jaleco profissional em tecido - EXG", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0074 7", descricao: "Protetor auditivo tipo inserção", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 02 10 0024 5", descricao: "Respirador descartável semi facial pff2 com carvão ativado (gases ácidos)", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+{ codigo: "1 02 10 0035 0", descricao: "Respirador descartável semi facial pff2 com carvão ativado (vapores orgânicos)", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+{ codigo: "1 02 10 0023 7", descricao: "Máscara de proteção N 95 (respirador) (4.01.03 - ENFERMAGEM)", unidade: "Unidade", saldo: 0, consumo: 8, sugestao: 8 },
+{ codigo: "1 07 01 0090 8", descricao: "Óculos de proteção translucido (4.01.02 - ODONTO)", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+{ codigo: "1 06 04 0029 1", descricao: "Óculos de proteção laranja (4.01.02 - ODONTO)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 06 04 0001 1", descricao: "Protetor facial (viseira) (4.01.02 - ODONTO)", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+],
     };
 
     // Renderiza tabela por setor
@@ -1707,7 +1776,8 @@ impressos: [
 table th:first-child,
 table td:first-child {
     min-width: 240px !important;
-    white-space: nowrap;
+    white-space: nowrap;,
+    epiConsumo: []
 }
 table th, table td {
     padding: 0.5rem 1rem;
