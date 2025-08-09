@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Monthly Order Request System - USF Santa Maria</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    
+<style>
+table th:first-child,
+table td:first-child {
+    min-width: 240px !important;
+    white-space: nowrap;
+}
+table th, table td {
+    padding: 0.5rem 1rem;
+    text-align: left;
+    vertical-align: middle;
+}
+table {
+    min-width: 100%;
+    table-layout: auto;
+}
+table thead tr.bg-gray-200 th {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    background-color: #e5e7eb;
+    white-space: nowrap;
+}
+</style>
+
+</head>
+<body class="bg-blue-50 font-sans">
+    <div class="container mx-auto p-4">
+        <!-- Header Section -->
+        <h1 class="text-3xl font-bold text-center mb-6">PEDIDO MENSAL</h1>
+
+        <!-- Order Metadata Form -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4">Informações do pedido</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Unidade Solicitante:</label>
+                    <input id="requestingUnit" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Período:</label>
+                    <input id="period" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="mb-4 overflow-auto">
+            <ul class="flex border-b whitespace-nowrap min-w-max">
+                <li class="mr-1">
+                    <button class="tab-button bg-white px-4 py-2 font-semibold text-gray-700 border-t border-l border-r rounded-t" data-tab="farmacia">Farmácia</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="psicotropicos">Psicotrópicos</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="enfermagem">Enfermagem</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="enfermagemDST">Enfermagem DST</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="enfermagemUrgenciaEmergencia">Enfermagem Urgência e Emergência</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="odonto">Odonto</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="odontoInstrumental">Odonto Instrumental</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="consumoLimpezaPeriodico">Consumo e Limpeza Periódico</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="consumoLimpezaEsporadico">Consumo e Limpeza Esporádico</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="impressosMateriaisEscritorio">Impressos e Materiais de Escritório</button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="tab-content">
+
+            <!-- Farmácia -->
+            <div id="farmacia" class="tab-pane bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Farmácia</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleFarmacia" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="farmaciaTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="farmaciaTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Psicotrópicos -->
+            <div id="psicotropicos" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Psicotrópicos</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsiblePsicotropicos" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="psicotropicosTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="psicotropicosTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Enfermagem -->
+            <div id="enfermagem" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Enfermagem</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleEnfermagem" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="enfermagemTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="enfermagemTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Enfermagem DST -->
+            <div id="enfermagemDST" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Enfermagem DST</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleEnfermagemDST" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="enfermagemDSTTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="enfermagemDSTTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Enfermagem Urgência e Emergência -->
+            <div id="enfermagemUrgenciaEmergencia" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Enfermagem Urgência e Emergência</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleEnfermagemUrgenciaEmergencia" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="enfermagemUrgenciaEmergenciaTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="enfermagemUrgenciaEmergenciaTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Odonto -->
+            <div id="odonto" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Odonto</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleOdonto" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="odontoTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="odontoTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Odonto Instrumental -->
+            <div id="odontoInstrumental" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Odonto Instrumental</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleOdontoInstrumental" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="odontoInstrumentalTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="odontoInstrumentalTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Consumo e Limpeza Periódico -->
+            <div id="consumoLimpezaPeriodico" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Consumo e Limpeza Periódico</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleConsumoLimpezaPeriodico" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="consumoLimpezaPeriodicoTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="consumoLimpezaPeriodicoTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Consumo e Limpeza Esporádico -->
+            <div id="consumoLimpezaEsporadico" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Consumo e Limpeza Esporádico</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleConsumoLimpezaEsporadico" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="consumoLimpezaEsporadicoTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="consumoLimpezaEsporadicoTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Impressos e Materiais de Escritório -->
+            <div id="impressosMateriaisEscritorio" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Impressos e Materiais de Escritório</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleImpressosMateriaisEscritorio" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="impressosMateriaisEscritorioTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="impressosMateriaisEscritorioTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Botões globais -->
+        <div class="text-center mt-4">
+            <button id="downloadAllOrder" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 font-semibold">
+                Baixar pedido completo (HTML)
+            </button>
+        </div>
+
+        <!-- Loading and Status Messages -->
+        <div id="loading" class="hidden text-center mt-4 text-gray-600">Loading...</div>
+        <div id="status" class="hidden text-center mt-4"></div>
+    </div>
+
+    <script>
+    // Dados para as tabelas (uso exemplo parcial)
+    const data = {
+farmacia: [
+  { codigo: "1 01 06 0001 7", descricao: "Aciclovir 200mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 06 002 5", descricao: "Aciclovir 50mg/g creme bisnaga - uso tópico - uso adulto e pediátrico", unidade: "Bisnaga", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0030 0", descricao: "Ácido acético 3% frasco 10ml (manipulado)", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0047 5", descricao: "Ácido acético 5% frasco 10ml (manipulado)", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 03 0001 3", descricao: "Ácido acetilsalicílico 100mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 03 0006 4", descricao: "Ácido acetilsalicílico 500mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0001 0", descricao: "Ácido fólico 5mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0031 9", descricao: "Ácido tricloroacético 80% frasco 10ml (manipulado)", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0163 3", descricao: "Agua destilada ampola 10ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 02 01 0018 1", descricao: "Agulha para aplicação de insulina com caneta 0,23X4MM", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 05 0014 4", descricao: "Alcatrão Mineral (FN) 10mg/g (1%) pomada", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 09 12 0605 5", descricao: "ALENDRONATO DE SODIO 70MG COMPRIMIDO - USO ADULTO", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 07 0005 4", descricao: "Albendazol 400mg comprimido mastigável", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 07 0006 2", descricao: "Albendazol 400mg solução oral frasco 10ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 08 0005 9", descricao: "Algestona acetofenida 150mg/ml + estradiol, enantato 10mg/ml ampola 1ml - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 01 0001 4", descricao: "Alopurinol 100mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 11 0011 5", descricao: "Aminofilina 100mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0009 2", descricao: "Amiodarona, cloridrato 200mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0009 0", descricao: "Amoxicilina 250mg/5ml suspensão frasco 150ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0010 4", descricao: "Amoxicilina 500mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0034 1", descricao: "Amoxicilina 500mg + Clavunalato de potassio125mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0061 9", descricao: "Amoxicilina trihidratada 287mg/5ml - equivalente a 250mg/5ml de amoxicilina + clavulanato de potássio 74,5mg/5ml - equivalente a 62,5mg/5ml de ácido clavulânico pó para suspensão oral frasco 75ml - uso", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0025 2", descricao: "Ampicilina 250mg/5ml suspensão frasco 60ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0024 4", descricao: "Ampicilina 500mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0001 9", descricao: "Anlodipino, besilato 5mg comprimido - uso adulto", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0076 0", descricao: "Atenolol 25mg comprimido - uso adulto", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0029 5", descricao: "Azitromicina dihidratada 524,10mg - equivalente a 500mg azitromicina base comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0051 1", descricao: "Azitromicina dihidratada 209,605mg - equivalente a 200mg de azitromicina base para cada 5ml de suspensão oral reconstituida de 600mg ou 900mg. frasco com pó para reconstituição mais frasco com", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 11 0025 5", descricao: "Beclometasona, dipropionato 200mcg capsula oral", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 11 0003 4", descricao: "Beclometasona, dipropionato 250mcg spray oral frasco 200 doses", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 11 0001 8", descricao: "Beclometasona, dipropionato 50mcg spray nasal frasco 200 doses", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0016 3", descricao: "Benzilpenicilina benzatina 1.200.000 Ui frasco-ampola - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0017 1", descricao: "Benzilpenicilina benzatina 600.000 Ui frasco-ampola - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0018 0", descricao: "Benzilpenicilina procaína 300.000 Ui + benzilpenicilina potássica 100.000 Ui frasco-ampola - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 07 0014 3", descricao: "Benzoato de benzila 250mg/ml solução frasco 100ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0075 9", descricao: "Benzoíla. peróxido 25mg (2,5%) base aquosa - gel", unidade: "Bisnaga", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0050 5", descricao: "Betamesona, acetato de 3mg/ml+betametasona, fosfato dissódico 3,945mg/ml (equivalente a 3mg/ml de betametasona) suspensão injetavel - ampola 1ml - uso adulto e pediátrico acima de 15 anos - uso", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0007 9", descricao: "Bromoprida 10mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0015 7", descricao: "Budesonida 32mcg/dose frasco 120 doses", unidade: "frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0035 1", descricao: "Budesonida 50mcg/dose suspensão em spray estéril - frasco contendo 120 doses - uso nasal - uso adulto e pediátrico acima de 6 anos.", unidade: "frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0024 6", descricao: "Bultilbrometo de escopolamina 10 mg comprimido +dipirona 250 mg comprimido revestido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0020 3", descricao: "Butilbrometo de escopolamina + dipirona sódica - Uso Im/Iv - ampola 5 ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0010 6", descricao: "Butilbrometo de escopolamina 6,67 mg/ml + dipirona 333,4 ml gotas frasco 20 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0007 6", descricao: "Butilbrometo de escopolamina 10 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0019 0", descricao: "Butilbrometo de escopolamina 20 mg/ml - ampola 1 ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0042 4", descricao: "Butilbrometo de escopolamina 10 mg/ml gotas frasco 20 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 09 12 1028 1", descricao: "CARBONATO DE CALCIO 1250MG (EQUIVALENTE A 500MG DE CALCIO) COMPRIMIDO", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0238 9", descricao: "CARBONATO DE CALCIO 1500MG (EQUIVALENTE A 600MG DE CALCIO)  + colecalciferol 400  UI", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0108 0", descricao: "CARBONATO DE CALCIO 1500MG + colecalciferol 200 UI COMP", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0004 3", descricao: "Captopril 25mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0067 1", descricao: "Carvedilol 12,5mg comprimido - USO ADULTO", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0041 8", descricao: "Carvedilol 6,25mg comprimido - USO ADULTO", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0007 4", descricao: "Cefalexina 250 mg/5 ml suspensão frasco 60 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0019 8", descricao: "Cefalexina 500 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0053 8", descricao: "Ceftriaxona sódica hemieptaidratada 1,193g - equivalente a 1g de ceftriaxona base frasco-ampola acompanhado de ampola diluente lidocaina 10mg/ml 3,5ml - uso IM - uso adulto e pediátrico", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 02 06 0025 7", descricao: "Caneta para injeção de insulina Refil - compativel com carpule 3ml (100UI/ml)", unidade: "Caneta", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 05 0006 3", descricao: "Cetoconazol 200 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 05 0004 7", descricao: "Cetoconazol creme 20 mg/g tubo 30 g", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 05 0003 9", descricao: "Cetoconazol shampoo 20 mg/g frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 01 0014 6", descricao: "Cetoprofeno 100mg ampola 2ml - uso IM", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 01 0015 4", descricao: "Cetoprofeno 100mg ampola - uso IV", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0014 9", descricao: "Cetotifeno, fumarato xarope frasco120 ml - uso adulto e pediátrico", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 10 0004 8", descricao: "Cimetidina 200 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0011 4", descricao: "Cinarizina 25 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0037 6", descricao: "Ciprofloxacino, cloridrato monohidratado 582mg - equivalente a 500MG de ciprofloxacino comprimido - USO ADULTO", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0049 0", descricao: "Claritromicina 500mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0031 7", descricao: "Clindamicina, cloridrato 300mg caps", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0005 1", descricao: "Clonidina, cloridrato 0,150mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0007 8", descricao: "Clortalidona 25mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0003 3", descricao: "Cold cream tubo 50G (manipulado)", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0009 6", descricao: "Complexo B comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0010 0", descricao: "Complexo B amp 2 ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 07 0009 7", descricao: "Deltametrina loção 0,02% frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0035 1", descricao: "Deltametrina shampoo frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0052 1", descricao: "Dexametasona 4mg comprimido - uso adulto e pediátrico", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0007 6", descricao: "Dexametasona, Fosfato Dissódico 4MG/ML - Frasco 2,5 ML", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0016 5", descricao: "Dexametasona, acetato (Ampola I) + cianocobalamina + tiamina, cloridrato + piridoxina, cloridrato (Ampola II) - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0011 4", descricao: "Dexametasona, acetato creme dermatológico 1 mg/g tubo 10 g", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0051 3", descricao: "Dexametasona 1 mg/g suspensão oftalmica esterio frasco 5ml- uso tópico ocular -uso adulto", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0001 7", descricao: "Dexclorfeniramina, maleato 2 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0004 1", descricao: "Dexclorfeniramina, maleato 2 mg/5 ml suspensão frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 02001", descricao: "Dextrano 70 1mg/ml + Hipromelose 3mg/ml frasco 15 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 01 0005 7", descricao: "Diclofenaco de sódio 75mg ampola 3ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 01 0008 1", descricao: "Diclofenaco sódico 50mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0022 0", descricao: "Digoxina 0,25 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0006 0", descricao: "Dimenidrinato + piridoxina, 50/10mg cloridrato comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0009 5", descricao: "Dimenidrinato + piridoxina, cloridrato + glicose + frutose ampola 10 ml - Uso Ev", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0028 9", descricao: "Dimenidrinato + piridoxina, cloridrato ampola 1 ml - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0003 6", descricao: "Dimenidrinato + piridoxina, cloridrato gotas frasco 20 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 03 0009 9", descricao: "Dipirona sódica 500 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 03 0005 6", descricao: "Dipirona sódica 500 mg/ml ampola 2 ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 03 0004 8", descricao: "Dipirona sódica 500 mg/ml gotas frasco 10 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0002 8", descricao: "Domperidona suspensão 1 mg/ml frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0170 6", descricao: "Doxazosina, mesilato 2MG comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0009 4", descricao: "Enalapril, maleato 10mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0010 8", descricao: "Enalapril, maleato 20mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0008 6", descricao: "Enalapril, maleato 5mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0064 3", descricao: "Eritromicina, estolato 250 mg/ 5 ml suspensão frasco 100ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0073 2", descricao: "Eritromicina, estolato 250 mg/ 5 ml suspensão oral frasco 60ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0011 6", descricao: "Espironolactona 25mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 08 0022 9", descricao: "Estriol 1mg/g creme vaginal bisnaga 50+aplicador - uso intravaginal - uso adulto", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 08 0019 9", descricao: "Estrogênios conjugados 0,3mg - drágeas - uso oral p/adultos", unidade: "Drágeas", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0076 9", descricao: "Finasterida 5MG comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 02 14 0007 3", descricao: "Fitas para hemoglicoteste - ( hgt )", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0018 3", descricao: "Furosemida 10 mg/ml ampola 2 ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0014 0", descricao: "Furosemida 40 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 05 0001 2", descricao: "Fluconazol 150mg cápsula - uso adulto.", unidade: "Cápsula", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0001 2", descricao: "Glibenclamida 5 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0442 0", descricao: "Glicerol 2,68G supositório - uso retal - uso adulto", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0052 7", descricao: "Gliclazida 60 mg comprimido (liberação modificada)", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0017 3", descricao: "Glicose 25% ampola 10 ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0018 1", descricao: "Glicose 50% ampola 10 ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0039 4", descricao: "Heparina Sódica 5.000ui/0,25ml AMP 0,25ml USO SC", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0050 7", descricao: "Hidralazina, cloridrato 25mg drágea - uso adulto", unidade: "Drágeas", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0006 0", descricao: "Hidroclorotiazida 25mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0029 7", descricao: "Hidrocortisona, acetato 11,2mg (equivalente a 10mg de hidrocortisona) creme - bisnaga de 20mg - uso dermatológico - uso adulto e pediátrico.", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0029 7", descricao: "Hidrocortisona + neomicina, sulfato + polimixina b, sulfato  gotas frasco 10 ml (tipo otosporin)", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0009 2", descricao: "Hidrocortisona, succinato 500 mg frasco", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 10 0003 0", descricao: "Hidróxido de alumínio 60 mg/ml suspensão frasco 150 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0006 8", descricao: "Hidróxido de magnésio 80 mg/ml suspensão frasco 120 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0040 8", descricao: "Hidróxido de potássio 10% frasco 10 ml (manipulado)", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 01 0012 0", descricao: "Ibuprofeno 300mg comprimido - uso adulto", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 01 0006 5", descricao: "Ibuprofeno 50mg/ml gotas frasco 30ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0005 5", descricao: "Insulina humana nph 100 ui/ml frasco 10 ml - uso adulto e pediátrico", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0057 8", descricao: "Insulina humana NPH 100UI/ML Caneta descartável 3ML - uso adulto e pediátrico", unidade: "Caneta", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0006 3", descricao: "Insulina humana regular 100 ui/ml frasco 10 ml - uso adulto e pediátrico", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0056 0", descricao: "Insulina humana regular 100UI/ML Caneta descartável 3ML uso adulto e pediátrico", unidade: "Caneta", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0035 7", descricao: "Insulina humana NPH 100 ui/ml refil 3 ml - uso adulto e pediátrico", unidade: "Refil", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0034 9", descricao: "Insulina humana regular 100 ui/ml refil 3 ml - uso adulto e pediátrico", unidade: "Refil", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 11 0007 7", descricao: "Ipratrópio, brometo gotas frasco 20 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0107 2", descricao: "Isossorbida, mononitrato 20mg comprimido - uso adulto", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0016 7", descricao: "Isossorbida, dinitrato 10 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0015 9", descricao: "Isossorbida, dinitrato 5 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 02 09 0025 0", descricao: "Lanceta para hgt", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0145 5", descricao: "Lactulose 1340,00mg/ml - equivalente a 667mg/ml de lactulos frasco 120 ml - uso adulto e pediátrico.", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 09 20 0121 0", descricao: "LEVODOPA 100MG + BENSERAZIDA, CLORIDRATO 25MG COMPRIMIDO BIRRANHURADO - USO ADULTO", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 09 12 1672 7", descricao: "LEVODOPA 100MG + BENSERAZIDA, CLORIDRATO 25MG  CAPSULA HBS - USO ADULTO", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 09 12 1561 5", descricao: "LEVODOPA 200MG + BENSERAZIDA, CLORIDRATO 50MG  COMPRIMIDO - USO ADULTO", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 09 12 1637 9", descricao: "LEVODOPA 250MG + CARBIDOPA 25MG COMPRIMIDO - USO ADULTO", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 08 0006 7", descricao: "Levonorgestrel 0,75 mg cartela 2 comp", unidade: "Cartela", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 08 0002 4", descricao: "Levonorgestrel+ etinilestradiol cartela 21 comp", unidade: "Cartela", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 19 0011 1", descricao: "Levotiroxina sódica 100mcg comprimido - uso adulto e pediátrico", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 19 0007 3", descricao: "Levotiroxina sódica 25mcg comprimido - uso adulto e pediátrico", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 19 0008 1", descricao: "Levotiroxina sódica 50mcg comprimido - uso adulto e pediátrico", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 09 12 2643 9", descricao: "Levotiroxina sódica 37,5mcg comprimido - uso adulto e pediátrico", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 19 0016 2", descricao: "Levotiroxina sódica 12,5mcg comprimido - uso adulto e pediátrico", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0005 0", descricao: "Lidocaína gel 100 mg/5 g tubo 30 g", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0014 9", descricao: "Loratadina 1 mg/ml suspensão oral frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0008 4", descricao: "Loratadina 10 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0003 5", descricao: "Losartana potássica 50mg comprimido revestido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 07 0002 0", descricao: "Mebendazol 100 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 07 0003 8", descricao: "Mebendazol suspensão 100 mg/5 ml frasco 30 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 08 0001 6", descricao: "Medroxiprogesterona, acetato 150 mg/ml ampola 1 ml - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 08 0024 5", descricao: "MEDROXIPROGESTERONA, ACETATO 25MG/ML + ESTRADIOL, CIPIONATO 5MG/ML SUSPENSAO INJETAVEL 0,5ML", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0002 0", descricao: "Metformina, cloridrato 500 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0003 9", descricao: "Metformina, cloridrato 850 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0017 5", descricao: "Metildopa 250 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0010 9", descricao: "Metoclopramida, cloridrato 10 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0005 2", descricao: "Metoclopramida, cloridrato 5 mg/ml ampola 2 ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0011 7", descricao: "Metoclopramida, cloridrato gotas frasco 10 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0175 7", descricao: "Metoprolol, succinato 47,5mg - equivalente a 50MG de Metoprolol, tartarato - uso adulto", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0003 1", descricao: "Metronidazol 250 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0005 8", descricao: "Metronidazol 40 mg/ml suspensão oral frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0008 2", descricao: "Metronidazol 500 mg/5 g tubo 50 g c/ 10 aplicadores", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0006 6", descricao: "Neomicina, sulfato + bacitracina zínica tubo 10 g", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0019 1", descricao: "Nifedipina 20 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 01 0003 0", descricao: "Nimesulida 100mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 01 0004 9", descricao: "Nimesulida 50mg/ml frasco 15ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 05 0002 0", descricao: "Nistatina 100.000 Ui/4 g creme vaginal tubo 60 g", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 07 0004 6", descricao: "Nistatina 100.000 Ui/ml suspensão oral frasco 50 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0040 6", descricao: "Nitrofurantoina 100mg cápsula", unidade: "Cápsula", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 08 0003 2", descricao: "Noretisterona 0,35 mg cartela 35 comp", unidade: "Cartela", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 08 0004 0", descricao: "Noretisterona, enantato + estradiol, valerato (50 + 5 mg/ml) ampola 1 ml - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0011 2", descricao: "Norfloxacina 400 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0004 1", descricao: "Óleo mineral 100% frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 10 0002 1", descricao: "Omeprazol 20 mg cápsula", unidade: "Cápsula", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0013 3", descricao: "Ondansetrona 8mg - equivalente a 10mg de ondansentrona, cloridrato comprimido de desintegração oral - uso adulto e pediátrico acima de 11 anos.", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 03 0003 0", descricao: "Paracetamol 200 mg/ml gotas frasco15 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 03 0013 7", descricao: "Paracetamol 500mg comprimido - uso adulto e pediátrico acima de 12 anos.", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0443 8", descricao: "Pasta D'água óxido de zinco 25% (250mg/g) bisnaga 80g - uso externo - uso adulto e pediátrico", unidade: "Bisnaga", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0012 2", descricao: "Permanganato de potássio 100 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 09 12 2645 5", descricao: "Permetrina 50mg/ml loção cremosa frasco plastico", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0044 4", descricao: "Polivitamínico gotas frasco 20 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0006 8", descricao: "Prednisolona, fosfato sódico 3 mg/ml suspensão frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0003 3", descricao: "Prednisona 20 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0002 5", descricao: "Prednisona 5 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0005 0", descricao: "Prometazina, cloridrato 25 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 13 0013 0", descricao: "Prometazina, cloridrato 25 mg/ml ampola 2 ml", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0119 6", descricao: "Proprafenona , cloridrato 300mg comprimido revestido - uso adulto", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 02 0013 2", descricao: "Propranolol, cloridrato 40 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0025 4", descricao: "Sais para reidratação oral envelope 27,9 g", unidade: "Envelope", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 11 0004 2", descricao: "Salbutamol 2 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 11 0026 3", descricao: "Salbutamol Sulfato 6MG-frasco 10ML- solução para nebulização", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 11 0009 3", descricao: "Salbutamol, sulfato 2 mg/5 ml xarope frasco 120 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 11 0010 7", descricao: "Salbutamol, sulfato spray oral 100 mcg/dose 200 doses", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 18 0001 0", descricao: "Simeticona 75 mg/ml gotas frasco 15 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0371 7", descricao: "Sinvastatina 20MG comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 09 12 2647 1", descricao: "Sulfadiazina de prata 1% (10mg/g) creme", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0004 0", descricao: "Sulfametoxazol - trimetoprim 200/40 mg/5 ml suspensão frasco 100 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0020 1", descricao: "Sulfametoxazol - trimetoprim 400/80 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0008 8", descricao: "Sulfato ferroso 25 mg/ml gotas frasco 30 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0006 1", descricao: "Sulfato ferroso 300 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0007 0", descricao: "Sulfato ferroso 40 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 19 0002 2", descricao: "Tiamazol 10 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0011 8", descricao: "Tiamina, cloridrato 300 mg comprimido", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0281 8", descricao: "Tiamina, cloridrato + piridoxina, cloridrato (Ampola I),  Cianocobalamina 5000 mcg (Ampola II) - Uso IM", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 20 0015 7", descricao: "Tiocolchicosídeo 2 mg/ml ampola 2 ml - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 17 0022 8", descricao: "Tobramicina 0,3% colírio frasco 5 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 12 0004 7", descricao: "Vildagliptina 50 mg comprimido (Reposição automática mediante consumo)", unidade: "Comprimido", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0045 2", descricao: "Vitamina a + d gotas frasco 20 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0004 5", descricao: "Vitamina a + d pomada tubo 45 g", unidade: "Tubo", saldo: 0, consumo: 0, sugestao: 0 },
+  { codigo: "1 01 09 0005 3", descricao: "Vitamina c 200 mg/ml gotas frasco 20 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 }
+        ],
+    psicotropicos: [
+        { codigo: "1 01 16 0007 0", descricao: "Ácido valpróico 250mg cápsula", unidade: "Cápsula", saldo: 150, consumo: 550, sugestao: 400 },
+        { codigo: "1 01 16 0008 8", descricao: "Ácido valpróico 250mg/5ml frasco 100ml", unidade: "Frasco", saldo: 25, consumo: 35, sugestao: 10 },
+        { codigo: "1 01 16 0009 6", descricao: "Ácido valpróico 500mg comprimido revestido", unidade: "Comprimido", saldo: 50, consumo: 450, sugestao: 400 },
+        { codigo: "1 01 16 0001 0", descricao: "Amitriptilina, cloridrato 25mg comprimido", unidade: "Comprimido", saldo: 3500, consumo: 5000, sugestao: 1500 },
+        { codigo: "1 01 16 0012 6", descricao: "Biperideno, cloridrato 2mg comprimido", unidade: "Comprimido", saldo: 180, consumo: 280, sugestao: 100 },
+        { codigo: "1 01 16 0018 5", descricao: "Carbamazepina 20 mg/ml suspensão frasco 100 ml", unidade: "Frasco", saldo: 20, consumo: 20, sugestao: 0 },
+        { codigo: "1 01 16 0026 6", descricao: "Carbamazepina 200 mg comprimido", unidade: "Comprimido", saldo: 1100, consumo: 4700, sugestao: 3600 },
+        { codigo: "1 01 16 0013 4", descricao: "Carbonato de lítio 300 mg comprimido", unidade: "Comprimido", saldo: 1000, consumo: 750, sugestao: -250 },
+        { codigo: "1 01 16 0019 3", descricao: "Clomipramina, cloridrato 25 mg comprimido", unidade: "Comprimido", saldo: 320, consumo: 100, sugestao: -220 },
+        { codigo: "1 01 15 0003 2", descricao: "Clonazepam 2 mg comprimido", unidade: "Comprimido", saldo: 1100, consumo: 4600, sugestao: 3500 },
+        { codigo: "1 01 15 0039 3", descricao: "Clonazepam 2,5mg/ml frasco de 20ml", unidade: "Frasco", saldo: 25, consumo: 35, sugestao: 10 },
+        { codigo: "1 01 16 0010 0", descricao: "Clorpromazina 25 mg comprimido", unidade: "Comprimido", saldo: 350, consumo: 550, sugestao: 200 },
+        { codigo: "1 01 16 0020 7", descricao: "Clorpromazina, cloridrato 100 mg comprimido", unidade: "Comprimido", saldo: 460, consumo: 60, sugestao: -400 },
+        { codigo: "1 01 15 0006 7", descricao: "Diazepan 10 mg comprimido", unidade: "Comprimido", saldo: 1000, consumo: 1700, sugestao: 700 },
+        { codigo: "1 01 15 0005 9", descricao: "Diazepan 5 mg/ml ampola 2 ml", unidade: "Ampola", saldo: 1, consumo: 2, sugestao: 1 },
+        { codigo: "1 01 16 0003 7", descricao: "Fenitoína 100 mg comprimido", unidade: "Comprimido", saldo: 160, consumo: 360, sugestao: 200 },
+        { codigo: "1 01 16 0021 5", descricao: "Fenitoína 50 mg/ml ampola 5 ml", unidade: "Ampola", saldo: 2, consumo: 2, sugestao: 0 },
+        { codigo: "1 01 16 0027 4", descricao: "Fenobarbital 100 mg comprimido", unidade: "Comprimido", saldo: 60, consumo: 360, sugestao: 300 },
+        { codigo: "1 01 16 0028 2", descricao: "Fenobarbital 4% gotas frasco 20 ml", unidade: "Frasco", saldo: 5, consumo: 4, sugestao: -1 },
+        { codigo: "1 01 16 0002 9", descricao: "Fluoxetina, cloridrato 20 mg cápsula", unidade: "Cápsula", saldo: 3800, consumo: 5800, sugestao: 2000 },
+        { codigo: "1 01 16 0015 0", descricao: "Haloperidol 2 mg/ml gotas frasco 20 ml", unidade: "Frasco", saldo: 0, consumo: 4, sugestao: 4 },
+        { codigo: "1 01 16 0022 3", descricao: "Haloperidol 5 mg comprimido", unidade: "Comprimido", saldo: 200, consumo: 150, sugestao: -50 },
+        { codigo: "1 01 16 0017 7", descricao: "Haloperidol 5 mg/ml ampola 1 ml - Uso Im", unidade: "Ampola", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 01 16 0016 9", descricao: "Haloperidol, decanoato 70,52 mg/ml ampola 1 ml", unidade: "Ampola", saldo: 15, consumo: 10, sugestao: 5 },
+        { codigo: "1 01 16 0023 1", descricao: "Imipramina 25 mg comprimido", unidade: "Comprimido", saldo: 60, consumo: 400, sugestao: 340 },
+        { codigo: "1 01 16 0024 0", descricao: "Levomepromazina 4% gotas frasco 20 ml", unidade: "Frasco", saldo: 30, consumo: 40, sugestao: 10 },
+        { codigo: "1 01 16 0041 0", descricao: "Naltrexona, cloridrato 50 mg comprimido", unidade: "Comprimido", saldo: 120, consumo: 210, sugestao: 90 },
+        { codigo: "1 01 15 0008 3", descricao: "Nitrazepan 5 mg comprimido", unidade: "Comprimido", saldo: 60, consumo: 100, sugestao: 40 },
+        { codigo: "1 01 16 0005 3", descricao: "Nortriptilina, cloridrato 25 mg comprimido", unidade: "Comprimido", saldo: 700, consumo: 1600, sugestao: 900 },
+        { codigo: "1 01 16 0006 1", descricao: "Sertralina, cloridrato 50 mg comprimido", unidade: "Comprimido", saldo: 6600, consumo: 14000, sugestao: 7400 },
+        { codigo: "1 01 16 0025 8", descricao: "Tioridazina, cloridrato 100 mg comprimido", unidade: "Comprimido", saldo: 20, consumo: 0, sugestao: -20 }
+        ],
+    enfermagem: [
+        { codigo: "1 02 12 0001 5", descricao: "Abaixador de lingua de madeira (Pacote c/ 100 unidades)", unidade: "Pacote", saldo: 2, consumo: 2, sugestao: 1 },
+        { codigo: "1 02 03 0001 6", descricao: "Ácido graxo essencial (Age )", unidade: "Frasco", saldo: 6, consumo: 3, sugestao: -3 },
+        { codigo: "1 02 09 0001 3", descricao: "Adaptador plástico para coleta  de sangue - padrão", unidade: "Unidade", saldo: 3, consumo: 3, sugestao: 0 },
+        { codigo: "1 02 12 0002 3", descricao: "Adesivo para sutura de pele ( steri strip ) - envelope com 05 unidades", unidade: "Envelope", saldo: 5, consumo: 0, sugestao: -5 },
+        { codigo: "1 02 11 0001 0", descricao: "Água deionizada ou destilada para autoclave", unidade: "Litro", saldo: 10, consumo: 10, sugestao: 0 },
+        { codigo: "1 02 11 0002 9", descricao: "Água destilada/bidestilada para injeção", unidade: "Litro", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 11 0004 5", descricao: "Água oxigenada 10 volumes - frasco  1.000 ml", unidade: "Litro", saldo: 2, consumo: 1, sugestao: -1 },
+        { codigo: "1 02 01 0003 3", descricao: "Agulha descartável hipodérmica 13 x 4,5 mm", unidade: "Unidade", saldo: 57, consumo: 0, sugestao: -57 },
+        { codigo: "1 02 01 0004 1", descricao: "Agulha descartável hipodérmica 25 x 7 mm", unidade: "Unidade", saldo: 200, consumo: 157, sugestao: -43 },
+        { codigo: "1 02 01 0005 0", descricao: "Agulha descartável hipodérmica 25 x 8 mm", unidade: "Unidade", saldo: 87, consumo: 15, sugestao: -72 },
+        { codigo: "1 02 01 0006 8", descricao: "Agulha descartável hipodérmica 30 x 7 mm", unidade: "Unidade", saldo: 200, consumo: 143, sugestao: -57 },
+        { codigo: "1 02 01 0007 6", descricao: "Agulha descartável hipodérmica 30 x 8 mm", unidade: "Unidade", saldo: 100, consumo: 29, sugestao: -71 },
+        { codigo: "1 02 01 0008 4", descricao: "Agulha descartável hipodérmica 40 x 12 mm", unidade: "Unidade", saldo: 100, consumo: 314, sugestao: 214 },
+        { codigo: "1 02 01 0002 5", descricao: "Agulha para coleta á vácuo múltipla 25 x 8 - cor verde", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 01 0001 7", descricao: "Agulha para coleta á vácuo múltipla 25 x 7 - cor preta", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 11 0005 3", descricao: "Álcool 70º (Antisséptico e bactericida)", unidade: "Litro", saldo: 8, consumo: 10, sugestao: 2 },
+        { codigo: "1 02 11 0017 7", descricao: "Álcool 92,8º ou 96º  para exame PCG", unidade: "Frasco", saldo: 2, consumo: 1, sugestao: -1 },
+        { codigo: "1 02 11 0006 1", descricao: "Álcool gel 70º (Antisséptico e bactericida)", unidade: "Frasco", saldo: 4, consumo: 1, sugestao: -3 },
+        { codigo: "1 02 12 0003 1", descricao: "Algodão hidrófilo de 500 grs", unidade: "Unidade", saldo: 4, consumo: 2, sugestao: -2 },
+        { codigo: "1 02 12 0004 0", descricao: "Almotolia plástica reta âmbar de 250 ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0005 8", descricao: "Almotolia plástica reta branca de 250 ml", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 1 },
+        { codigo: "1 02 02 0001 1", descricao: "Atadura de crepe de 10 cm", unidade: "Unidade", saldo: 144, consumo: 134, sugestao: -10 },
+        { codigo: "1 02 02 0002 0", descricao: "Atadura de crepe de 20 cm", unidade: "Unidade", saldo: 84, consumo: 12, sugestao: -72 },
+        { codigo: "1 02 02 0003 8", descricao: "Atadura de crepe de 6 cm", unidade: "Unidade", saldo: 60, consumo: 34, sugestao: -26 },
+        { codigo: "1 02 02 0005 4", descricao: "Atadura de rayon", unidade: "Unidade", saldo: 1, consumo: 1, sugestao: 0 },
+        { codigo: "1 02 02 0009 7", descricao: "Atadura elástica branca - 10 x 2,2 CM", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 1 },
+        { codigo: "1 02 12 0006 6", descricao: "Avental descartável para  gineco", unidade: "Unidade", saldo: 50, consumo: 36, sugestao: -14 },
+        { codigo: "1 02 12 0102 0", descricao: "Avental descartável manga longa", unidade: "Unidade", saldo: 170, consumo: 86, sugestao: -84 },
+        { codigo: "1 02 09 0003 0", descricao: "Bandagem pós coleta - Tipo Blood Stop. (Caixa c/ 500 unidades)", unidade: "Unidade", saldo: 2000, consumo: 1071, sugestao: -929 },
+        { codigo: "1 02 09 0011 0", descricao: "Bolsa coletora de urina (sistema fechado) - 2.000 ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 03 0002 4", descricao: "Bota de unna - pronto uso", unidade: "Unidade", saldo: 2, consumo: 0, sugestao: -2 },
+        { codigo: "1 02 10 0001 6", descricao: "Cadarço fixador (rolo c/ 50 metros)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 10 0002 4", descricao: "Campo operatório Estéril - pacote com 5 unidades", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0007 4", descricao: "Caneta para ecg - na cor preta", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 09 0004 8", descricao: "Caneta retro para coleta - cor preta", unidade: "Unidade", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 11 0008 8", descricao: "Clorhexidina 0,5% alcoólico", unidade: "Litro", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 11 0007 0", descricao: "Clorhexidina 2% degermante", unidade: "Litro", saldo: 1, consumo: 1, sugestao: 0 },
+        { codigo: "1 02 11 0020 7", descricao: "Clorhexidina aquoso a 1%", unidade: "Litro", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 03 0022 9", descricao: "Cobertura de alginato de cálcio e sódio (placa de alginato)", unidade: "Unidade", saldo: 1, consumo: 1, sugestao: 0 },
+        { codigo: "1 02 09 0028 5", descricao: "Coletor de material perfurocortante 13 litros", unidade: "Unidade", saldo: 8, consumo: 9, sugestao: 1 },
+        { codigo: "1 02 09 0027 7", descricao: "Coletor de material perfurocortante 7 litros", unidade: "Unidade", saldo: 17, consumo: 6, sugestao: -11 },
+        { codigo: "1 02 09 0012 9", descricao: "Coletor de urina infantil unissex", unidade: "Unidade", saldo: 10, consumo: 1, sugestao: -9 },
+        { codigo: "1 02 09 0005 6", descricao: "Coletor para agulha de coleta - com aproximadamente 1,5 litros", unidade: "Unidade", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 02 0007 0", descricao: "Compressa de gaze (Pacote c/ 500 unidades)", unidade: "Pacote", saldo: 3, consumo: 3, sugestao: 0 },
+        { codigo: "1 02 02 0008 9", descricao: "Compressa de gaze em rolo ( tipo queijo )", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 02 0006 2", descricao: "Compressa de gaze estéril - envelope com 5 unidades", unidade: "Envelope", saldo: 2720, consumo: 1221, sugestao: -1499 },
+        { codigo: "1 02 03 0005 9", descricao: "Curativo com carvão ativado 10 x 10 cm (sem prata) - tipo sachê", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 03 0007 5", descricao: "Curativo com carvão ativado e prata - recortável", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 03 0006 7", descricao: "Curativo de carvão ativado c/ prata - tipo sachê", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 03 0008 3", descricao: "Curativo de hidrocolóide em placa 20 x 20 cm", unidade: "Unidade", saldo: 2, consumo: 0, sugestao: -2 },
+        { codigo: "1 02 03 0010 5", descricao: "Curativo de hidrofibra com prata", unidade: "Unidade", saldo: 0, consumo: 4, sugestao: 4 },
+        { codigo: "1 02 03 0021 0", descricao: "Curativo de hidrofibra sem prata ( Aquacel)", unidade: "Unidade", saldo: 0, consumo: 10, sugestao: 10 },
+        { codigo: "1 02 11 0018 5", descricao: "Detergente enzimatico - 3 enzimas", unidade: "Galão", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 12 0012 0", descricao: "Dispositivo intra uterino - (DIU) - Liberação SMS", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0013 9", descricao: "Eletrodo descartável para Ecg pré cordial", unidade: "Unidade", saldo: 200, consumo: 543, sugestao: 343 },
+        { codigo: "1 02 12 0054 6", descricao: "Equipo de nutriçao enteral - gastrostomia", unidade: "Unidade", saldo: 90, consumo: 0, sugestao: -90 },
+        { codigo: "1 02 06 0003 6", descricao: "Equipo para infusão - macrogotas", unidade: "Unidade", saldo: 75, consumo: 300, sugestao: 225 },
+        { codigo: "1 02 12 0017 1", descricao: "Escova descartável para citológico (Pacote c/ 100 unidades)", unidade: "Pacote", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 12 0018 0", descricao: "Escova p/ limpeza de unhas e mãos", unidade: "Unidade", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 12 0041 4", descricao: "Espátula de ayre (Pacote c/ 100 unidades)", unidade: "Pacote", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 16 0004 8", descricao: "Espéculo vaginal descartável G", unidade: "Unidade", saldo: 25, consumo: 0, sugestao: -25 },
+        { codigo: "1 02 16 0005 6", descricao: "Espéculo vaginal descartável M", unidade: "Unidade", saldo: 25, consumo: 21, sugestao: -4 },
+        { codigo: "1 02 16 0006 4", descricao: "Espéculo vaginal descartável P", unidade: "Unidade", saldo: 50, consumo: 15, sugestao: -35 },
+        { codigo: "1 02 08 0001 9", descricao: "Fio mononylon agulhado 3.0", unidade: "Unidade", saldo: 10, consumo: 4, sugestao: -6 },
+        { codigo: "1 02 08 0002 7", descricao: "Fio mononylon agulhado 4.0", unidade: "Unidade", saldo: 4, consumo: 1, sugestao: -3 },
+        { codigo: "1 02 08 0003 5", descricao: "Fio mononylon agulhado 5.0", unidade: "Unidade", saldo: 4, consumo: 1, sugestao: -3 },
+        { codigo: "1 02 08 0004 3", descricao: "Fio mononylon agulhado 6.0", unidade: "Unidade", saldo: 3, consumo: 0, sugestao: -3 },
+        { codigo: "1 02 14 0001 4", descricao: "Fita adesiva para autoclave ( 19 x 30 )", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 14 0009 0", descricao: "Fita adesiva tipo esparadrapo - 10 x 4,5 cm", unidade: "Unidade", saldo: 15, consumo: 8, sugestao: -7 },
+        { codigo: "1 02 14 0004 9", descricao: "Fita adesiva transpore", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+        { codigo: "1 02 14 0005 7", descricao: "Fita microporosa 25mm x 10 mts (micropore)", unidade: "Unidade", saldo: 1, consumo: 5, sugestao: 4 },
+        { codigo: "1 02 14 0006 5", descricao: "Fita microporosa 50 mm x 10 mts (micropore)", unidade: "Unidade", saldo: 9, consumo: 6, sugestao: -3 },
+        { codigo: "1 02 14 0002 2", descricao: "Fita para ecg (rolo verde c/ 50 mm)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 14 0008 1", descricao: "Fitas para teste de gravidez", unidade: "Unidade", saldo: 31, consumo: 44, sugestao: 13 },
+        { codigo: "1 02 14 0003 0", descricao: "Fita ph vaginal 4,0 a 7,0 (Caixa c/ 100 unidades)", unidade: "Caixa", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 12 0055 4", descricao: "Folha térmica para Ecg - Ecg cardiocare (rolo 30 mts)", unidade: "Rolo", saldo: 4, consumo: 1, sugestao: -3 },
+        { codigo: "1 02 12 0019 8", descricao: "Folhas para Ecg", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 09 0006 4", descricao: "Frasco coleta urina", unidade: "Unidade", saldo: 200, consumo: 143, sugestao: -57 },
+        { codigo: "1 02 12 0020 1", descricao: "Frasco nutrição enteral - 300 ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0048 1", descricao: "Frasco para coleta de exame citopatológico", unidade: "Unidade", saldo: 20, consumo: 8, sugestao: -12 },
+        { codigo: "1 02 09 0007 2", descricao: "Frasco urina estéril", unidade: "Unidade", saldo: 200, consumo: 86, sugestao: -114 },
+        { codigo: "1 02 12 0021 0", descricao: "Gel lubrificante - sachê 5 g", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0023 6", descricao: "Geléia para ecg - tubo 100 ml", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+        { codigo: "1 07 01 0075 4", descricao: "Gorro descartável", unidade: "Unidade", saldo: 200, consumo: 14, sugestao: -186 },
+        { codigo: "1 02 12 0010 4", descricao: "Haste flexível - cotonete", unidade: "Caixa", saldo: 2, consumo: 2, sugestao: 0 },
+        { codigo: "1 02 03 0013 0", descricao: "Hidrocolóide pasta tubo 30 gr (duoderm)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 03 0015 6", descricao: "Hidrogel com alginato", unidade: "Tubo", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 03 0014 8", descricao: "Hidrogel tubo 25 gr - sem alginato.", unidade: "Tubo", saldo: 7, consumo: 5, sugestao: -2 },
+        { codigo: "1 02 11 0010 0", descricao: "Hipoclorito de sódio 2,5% (Controlado setor 30 - Consumo)", unidade: "Galão", saldo: 2, consumo: 16, sugestao: 14 },
+        { codigo: "1 02 12 0069 4", descricao: "Indicador biológico.", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0024 4", descricao: "Integrador químico classe 5", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0021 9", descricao: "Kit para sondagem vesical", unidade: "Unidade", saldo: 1, consumo: 1, sugestao: 0 },
+        { codigo: "1 02 15 0001 9", descricao: "Lâmina bisturi nº 11", unidade: "Unidade", saldo: 4, consumo: 7, sugestao: 3 },
+        { codigo: "1 02 15 0002 7", descricao: "Lâmina bisturi nº 15", unidade: "Unidade", saldo: 5, consumo: 4, sugestao: -1 },
+        { codigo: "1 02 15 0003 5", descricao: "Lâmina bisturi nº 22", unidade: "Unidade", saldo: 5, consumo: 2, sugestao: -3 },
+        { codigo: "1 02 15 0004 3", descricao: "Lâmina bisturi nº 24", unidade: "Unidade", saldo: 5, consumo: 0, sugestao: -5 },
+        { codigo: "1 02 15 0005 1", descricao: "Lâmina p/ microscopia fosca (Caixa c/ 50 unidades)", unidade: "Caixa", saldo: 3, consumo: 1, sugestao: -2 },
+        { codigo: "1 02 15 0006 0", descricao: "Lamínula de vidro 24 x 32 mm (Caixa c/ 100 unidades)", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 09 0030 7", descricao: "Lanceta para hgt com dispositivo de segurança. (NR 32)", unidade: "Unidade", saldo: 0, consumo: 157, sugestao: 157 },
+        { codigo: "1 02 09 0024 2", descricao: "Lanceta para teste do pezinho", unidade: "Unidade", saldo: 5, consumo: 5, sugestao: 0 },
+        { codigo: "1 02 05 0001 5", descricao: "Luva cirurgica estéril nº 6,5", unidade: "Par", saldo: 2, consumo: 6, sugestao: 4 },
+        { codigo: "1 02 05 0003 1", descricao: "Luva cirurgica estéril nº 7,5", unidade: "Par", saldo: 7, consumo: 4, sugestao: -3 },
+        { codigo: "1 02 05 0002 3", descricao: "Luva cirurgica estéril nº 7,0", unidade: "Par", saldo: 9, consumo: 5, sugestao: -4 },
+        { codigo: "1 02 05 0004 0", descricao: "Luva cirurgica estéril nº 8,0", unidade: "Par", saldo: 3, consumo: 0, sugestao: -3 },
+        { codigo: "1 02 05 0005 8", descricao: "Luva cirurgica estéril nº 8,5", unidade: "Par", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 05 0008 2", descricao: "Luva de procedimento G -cx 100 unidades", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 05 0006 6", descricao: "Luva nitrílica - tamanho grande", unidade: "Caixa", saldo: 5, consumo: 2, sugestao: -3 },
+        { codigo: "1 02 05 0014 7", descricao: "Luva nitrilica - tamanho médio", unidade: "Caixa", saldo: 7, consumo: 25, sugestao: 18 },
+        { codigo: "1 02 05 0015 5", descricao: "Luva nitrilica - tamanho pequeno", unidade: "Caixa", saldo: 11, consumo: 5, sugestao: -6 },
+        { codigo: "1 02 05 0012 0", descricao: "Luva procedimento em vinil - M", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 05 0013 9", descricao: "Luva procedimento em vinil - M (sem amido/talco) (Liberação Controlada)", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 05 0011 2", descricao: "Luva procedimento em vinil - P", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 05 0007 4", descricao: "Luva procedimento PP", unidade: "Caixa", saldo: 0, consumo: 4, sugestao: 4 },
+        { codigo: "1 02 05 0017 1", descricao: "Luva nitrílica - tamanho extra grande", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 07 01 0086 0", descricao: "Mascara cirurgica descartável", unidade: "Unidade", saldo: 750, consumo: 807, sugestao: 57 },
+        { codigo: "1 02 10 0023 7", descricao: "Máscara de proteção N 95 (respirador) (4.01.03 - ENFERMAGEM)", unidade: "Unidade", saldo: 22, consumo: 17, sugestao: -5 },
+        { codigo: "1 02 12 0026 0", descricao: "Mascara p/ inalação uso adulto - conector amarelo", unidade: "Conjunto", saldo: 4, consumo: 1, sugestao: -3 },
+        { codigo: "1 02 12 0025 2", descricao: "Mascara p/ inalação uso adulto - conector verde", unidade: "Conjunto", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0027 9", descricao: "Oliva para estetoscópio", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0053 8", descricao: "Papel grau cirurgico - 15 x 100 metros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0029 5", descricao: "Papel grau cirurgico - 25 x 100 metros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0030 9", descricao: "Papel lençol descartável 50 x 50 - pequeno", unidade: "Unidade", saldo: 17, consumo: 0, sugestao: -17 },
+        { codigo: "1 02 12 0031 7", descricao: "Papel lençol descartável 70 x 50  - grande", unidade: "Unidade", saldo: 9, consumo: 7, sugestao: -2 },
+        { codigo: "1 02 12 0100 3", descricao: "Papel térmico compatível com a Incubadora Minibio / Sispack", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0032 5", descricao: "Pêra p/ ecg em borracha", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 17 0003 4", descricao: "Preservativo feminino (Controlado no Setor 14 - Farmácia Satélite)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 17 0002 6", descricao: "Preservativo masculino 49 mm (Controlado no Setor 14 - Farmácia Satélite)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 17 0001 8", descricao: "Preservativo masculino 52 mm (Controlado no Setor 14 - Farmácia Satélite)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 11 0012 6", descricao: "Pvpi tópico", unidade: "Litro", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 09 0010 2", descricao: "Saco coletor urina (sistema aberto)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 03 02 0151 7", descricao: "Saco plastico transparente em polietileno, atóxico, inodoro e incolor, medidas aprox. 08x24 cm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 03 02 0152 5", descricao: "Saco plastico transparente em polietileno, atóxico, inodoro e incolor, medidas aprox. 15x30 cm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0033 3", descricao: "Saco p/ lixo contaminado leitoso de 100 l (Controlado setor 30 - Consumo)", unidade: "Unidade", saldo: 0, consumo: 136, sugestao: 136 },
+        { codigo: "1 02 12 0034 1", descricao: "Saco p/ lixo contaminado leitoso de 15 l (Controlado setor 30 - Consumo)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0035 0", descricao: "Saco p/ lixo contaminado leitoso de 50 l (Controlado setor 30 - Consumo)", unidade: "Unidade", saldo: 0, consumo: 36, sugestao: 36 },
+        { codigo: "1 02 09 0013 7", descricao: "Saco plástico transparente p/ sangue", unidade: "Unidade", saldo: 50, consumo: 26, sugestao: -24 },
+        { codigo: "1 02 09 0031 5", descricao: "Scalp p/ coleta de sangue a vacuo G25 (NR 32)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 09 0015 3", descricao: "Scalp p/ coleta de sangue á vacuo G25", unidade: "Unidade", saldo: 15, consumo: 7, sugestao: -8 },
+        { codigo: "1 02 09 0014 5", descricao: "Scalp p/ coleta de sangue á vacuo G23", unidade: "Unidade", saldo: 0, consumo: 189, sugestao: 189 },
+        { codigo: "1 02 06 0004 4", descricao: "Scalp para soro G 19 - com NR 32", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 06 0005 2", descricao: "Scalp para soro G 21 - com NR 32", unidade: "Unidade", saldo: 50, consumo: 7, sugestao: -43 },
+        { codigo: "1 02 06 0006 0", descricao: "Scalp para soro G 23 - com NR 32", unidade: "Unidade", saldo: 300, consumo: 143, sugestao: -157 },
+        { codigo: "1 02 06 0007 9", descricao: "Scalp para soro G 25 - com NR 32", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 06 0008 7", descricao: "Scalp para soro G 27 - com NR 32", unidade: "Unidade", saldo: 20, consumo: 0, sugestao: -20 },
+        { codigo: "1 02 04 0001 0", descricao: "Seringa descartável s/ agulha de 01 ml (Controlado no Setor 14 - Farmácia)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 04 0009 6", descricao: "Seringa descartável s/ agulha de 10 ml", unidade: "Unidade", saldo: 80, consumo: 76, sugestao: -4 },
+        { codigo: "1 02 04 0004 5", descricao: "Seringa descartável s/ agulha de 10 ml - com NR32", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 04 0005 3", descricao: "Seringa descartável s/ agulha de 20 ml", unidade: "Unidade", saldo: 67, consumo: 7, sugestao: -60 },
+        { codigo: "1 02 04 0008 8", descricao: "Seringa descartavel s/ agulha de 20 ml - com NR32", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 04 0002 9", descricao: "Seringa descartável s/ agulha de 3 ml", unidade: "Unidade", saldo: 168, consumo: 134, sugestao: -34 },
+        { codigo: "1 02 04 0010 0", descricao: "Seringa descartável s/ agulha de 3 ml - com NR32", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 04 0003 7", descricao: "Seringa descartável s/ agulha de 5 ml - com NR32", unidade: "Unidade", saldo: 154, consumo: 150, sugestao: -4 },
+        { codigo: "1 02 04 0013 4", descricao: "Seringa descartável s/ agulha de 60 ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 04 0011 8", descricao: "Seringa insulina monobloco 100 UI - agulha 06 x 0,25 (Controlado setor 14 - Farmácia)", unidade: "Unidade", saldo: 210, consumo: 43, sugestao: -167 },
+        { codigo: "1 02 04 0012 6", descricao: "Seringa insulina monobloco 50 UI - agulha 06 x 0,25 (Controlado setor 14 - Farmácia)", unidade: "Unidade", saldo: 358, consumo: 57, sugestao: -301 },
+        { codigo: "1 02 09 0026 9", descricao: "Sistema para coleta e analise multipla e exame de fezes", unidade: "Unidade", saldo: 75, consumo: 25, sugestao: -50 },
+        { codigo: "1 02 11 0013 4", descricao: "Solução de Lugol - forte - Teste de Schiller - 2%", unidade: "Unidade", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 07 0041 3", descricao: "Sonda aspiração traqueal nº 04", unidade: "Unidade", saldo: 60, consumo: 0, sugestao: -60 },
+        { codigo: "1 02 07 0001 4", descricao: "Sonda aspiração traqueal nº 06", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0002 2", descricao: "Sonda aspiração traqueal nº 08", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0003 0", descricao: "Sonda aspiração traqueal nº 10", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0004 9", descricao: "Sonda aspiração traqueal nº 12", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0005 7", descricao: "Sonda aspiração traqueal nº 14", unidade: "Unidade", saldo: 60, consumo: 0, sugestao: -60 },
+        { codigo: "1 02 07 0028 6", descricao: "Sonda aspiração traqueal nº 16", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0040 5", descricao: "Sonda aspiração traqueal nº 18", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0042 1", descricao: "Sonda aspiração traqueal nº 20", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0014 6", descricao: "Sonda foley nº 22", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0047 2", descricao: "Sonda foley nº 24", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0015 4", descricao: "Sonda uretral de alívio nº 06", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0016 2", descricao: "Sonda uretral de alívio nº 08", unidade: "Unidade", saldo: 0, consumo: 30, sugestao: 30 },
+        { codigo: "1 02 07 0017 0", descricao: "Sonda uretral de alívio nº 10", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0018 9", descricao: "Sonda uretral de alívio nº 12", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0019 7", descricao: "Sonda uretral de alívio nº 14", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0020 0", descricao: "Sonda uretral de alívio nº 16", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 07 0043 0", descricao: "Sonda uretral de alívio nº 18", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 06 0015 0", descricao: "Soro fisiológico 0,9 % injetável - frasco de 100 ml", unidade: "Frasco", saldo: 300, consumo: 60, sugestao: -240 },
+        { codigo: "1 02 06 0002 8", descricao: "Soro fisiológico 0,9 % injetável - frasco de 250 ml", unidade: "Frasco", saldo: 665, consumo: 212, sugestao: -453 },
+        { codigo: "1 02 06 0001 0", descricao: "Soro fisiológico 0,9 % curativo - frasco com 250 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 09 0041 2", descricao: "SWAB de Rayon estéril para coleta de amostras. Haste plástica de 14 cm, ponta 100% Rayon", unidade: "Unidade", saldo: 200, consumo: 0, sugestao: -200 },
+        { codigo: "1 02 12 0037 6", descricao: "Termômetro com extensor digital", unidade: "Unidade", saldo: 2, consumo: 0, sugestao: -2 },
+        { codigo: "1 02 12 0036 8", descricao: "Termômetro clínico digital", unidade: "Unidade", saldo: 1, consumo: 0, sugestao: -1 },
+        { codigo: "1 02 09 0016 1", descricao: "Torniquete elástico com trava regulável", unidade: "Unidade", saldo: 2, consumo: 1, sugestao: -1 },
+        { codigo: "1 02 09 0040 4", descricao: "Tubo cônico tipo Falcon, estéril, em polipropileno (PP), capacidade 15 ml, com tampa rosca", unidade: "Unidade", saldo: 100, consumo: 0, sugestao: -100 },
+        { codigo: "1 02 09 0017 0", descricao: "Tubo para coleta de sangue à vácuo amarelo - 5 ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 09 0022 6", descricao: "Tubo para coleta de sangue à vácuo amarelo 3,5 ml - adolescente", unidade: "Unidade", saldo: 0, consumo: 329, sugestao: 329 },
+        { codigo: "1 02 09 0020 0", descricao: "Tubo para coleta de sangue à vácuo amarelo c/ gel (bebê)", unidade: "Unidade", saldo: 20, consumo: 4, sugestao: -16 },
+        { codigo: "1 02 09 0021 8", descricao: "Tubo para coleta de sangue à vácuo roxo (bebê)", unidade: "Unidade", saldo: 9, consumo: 4, sugestao: -5 },
+        { codigo: "1 02 09 0018 8", descricao: "Tubo para coleta de sangue à vácuo roxo de 3 ou 4 ml", unidade: "Unidade", saldo: 300, consumo: 257, sugestao: -43 },
+        { codigo: "1 02 09 0019 6", descricao: "Tubo para coleta de sangue à vácuo vermelho de 10 ml - seco", unidade: "Unidade", saldo: 20, consumo: 19, sugestao: -1 },
+        { codigo: "1 02 11 0014 2", descricao: "Vaselina líquida", unidade: "Litro", saldo: 0, consumo: 1, sugestao: 1 },
+        { codigo: "1 02 12 0039 2", descricao: "Vaselina sólida - pote com 500 grs", unidade: "Pote", saldo: 1, consumo: 1, sugestao: 0 },
+        { codigo: "1 02 01 0016 5", descricao: "Agulha para acupuntura 0,18 x 0,8 mm (EXCLUSIVO P/ ESPAÇO SAÚDE)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 01 0015 7", descricao: "Agulha para acupuntura 0,25 x 0,30 mm (EXCLUSIVO P/ ESPAÇO SAÚDE)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 19 0004 1", descricao: "Caneta para papel grau cirúrgico (EXCLUSIVO P/ ESPAÇO SAÚDE)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 12 0050 3", descricao: "Papel crepado - 50 x 50 MM (EXCLUSIVO P/ ESPAÇO SAÚDE)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 02 19 0011 4", descricao: "Teste Bowie e Dick - folha (EXCLUSIVO P/ ESPAÇO SAÚDE)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+        { codigo: "1 0120 0436 5", descricao: "TESTE RÁPIDO SARS-COV2 / INFLUENZA TIPO A, INFLUENZA TIPO B", unidade: "Unidade", saldo: 44, consumo: 280, sugestao: 236 },
+        { codigo: "1 01 20 0428 4", descricao: "TESTE RÁPIDO ANTIGÊNICO PARA COVID-19", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 }
+    ],
+        enfermagemDST: [],
+        enfermagemUrgenciaEmergencia: [],
+        odonto: [
+            { codigo: "1 07 01 0001 0", descricao: "Ácido condicionador para resina foto", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
+            // ... mais itens
+        ],
+        odontoInstrumental: [],
+        consumoLimpezaPeriodico: [],
+        consumoLimpezaEsporadico: [],
+        impressosMateriaisEscritorio: []
+    };
+
+    // Renderiza tabela por setor
+    function renderTable(tab, items) {
+        const tableBody = document.getElementById(`${tab}TableBody`);
+        if (!tableBody) return;
+
+        tableBody.innerHTML = '';
+        items.forEach(item => {
+            let colorClass = '';
+            if (item.sugestao < 0) colorClass = 'bg-red-100 text-red-700 font-bold';
+            else if (item.sugestao > 0) colorClass = 'bg-green-100 text-green-700 font-bold';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="border px-4 py-2" data-codigo="${item.codigo}">${item.codigo}</td>
+                <td class="border px-4 py-2">${item.descricao}</td>
+                <td class="border px-4 py-2">${item.unidade}</td>
+                <td class="border px-4 py-2">
+                    <input type="number" value="${item.saldo}" class="w-full p-1 border rounded" data-codigo="${item.codigo}" data-field="saldo" />
+                </td>
+                <td class="border px-4 py-2">
+                    <input type="number" value="${item.consumo}" class="w-full p-1 border rounded" data-codigo="${item.codigo}" data-field="consumo" />
+                </td>
+                <td class="border px-4 py-2">
+                    <input type="number" value="${item.sugestao}" class="w-full p-1 border rounded ${colorClass}" data-codigo="${item.codigo}" data-field="sugestao" readonly />
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Auto recalcula sugestao ao editar saldo ou consumo
+        document.querySelectorAll(`#${tab}TableBody input[data-field="saldo"], #${tab}TableBody input[data-field="consumo"]`).forEach(input => {
+            input.addEventListener('input', () => {
+                const row = input.closest('tr');
+                const saldoInput = row.querySelector('input[data-field="saldo"]');
+                const consumoInput = row.querySelector('input[data-field="consumo"]');
+                const sugestaoInput = row.querySelector('input[data-field="sugestao"]');
+                const saldo = parseInt(saldoInput.value) || 0;
+                const consumo = parseInt(consumoInput.value) || 0;
+                const sugestao = consumo - saldo;
+                sugestaoInput.value = sugestao;
+
+                sugestaoInput.classList.remove('bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700', 'font-bold');
+
+                if (sugestao < 0) {
+                    sugestaoInput.classList.add('bg-red-100', 'text-red-700', 'font-bold');
+                } else if (sugestao > 0) {
+                    sugestaoInput.classList.add('bg-green-100', 'text-green-700', 'font-bold');
+                }
+            });
+        });
+    }
+
+    // Troca de abas
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.remove('bg-white', 'border-t', 'border-l', 'border-r', 'rounded-t');
+            button.classList.add('bg-gray-200');
+        });
+        const tabContent = document.getElementById(tabName);
+        if (tabContent) tabContent.classList.remove('hidden');
+        const activeButton = document.querySelector(`button[data-tab="${tabName}"]`);
+        if (activeButton) {
+            activeButton.classList.add('bg-white', 'border-t', 'border-l', 'border-r', 'rounded-t');
+            activeButton.classList.remove('bg-gray-200');
+        }
+    }
+
+    // Capitaliza a primeira letra da string
+    function capitalizeFirstLetter(string) {
+        if (!string) return string;
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    // Inicializa a API do Google Sheets
+    function initGoogleSheets() {
+        gapi.load('client:auth2', () => {
+            gapi.client.init({
+                apiKey: 'YOUR_API_KEY', // substitua aqui com sua API key
+                clientId: 'YOUR_CLIENT_ID', // substitua aqui com seu Client ID
+                scope: 'https://www.googleapis.com/auth/spreadsheets',
+                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4']
+            }).then(() => {
+                console.log('Google API initialized');
+            }).catch(err => console.error('Error initializing Google API:', err));
+        });
+    }
+
+    // Envia todos os pedidos para o Google Sheets
+    async function submitAllOrders() {
+        const requestingUnit = document.getElementById('requestingUnit').value || '(não informado)';
+        const period = document.getElementById('period').value || '(não informado)';
+
+        const allData = [];
+
+        // Para cada setor, coleta dados
+        for (const [tabKey, items] of Object.entries(data)) {
+            const tableBody = document.getElementById(`${tabKey}TableBody`);
+            if (!tableBody) continue;
+            const rows = tableBody.querySelectorAll('tr');
+            if (!rows.length) continue;
+
+            // Pega responsável específico do setor
+            const responsibleInput = document.getElementById(`responsible${capitalizeFirstLetter(tabKey)}`);
+            const responsible = responsibleInput ? responsibleInput.value || '(não informado)' : '(não informado)';
+
+            allData.push([capitalizeFirstLetter(tabKey)]);
+            allData.push(['Responsável:', responsible]);
+            allData.push(['Unidade Solicitante:', requestingUnit]);
+            allData.push(['Período:', period]);
+            allData.push(['Código SMAR', 'Descrição completa', 'Unidade de Medida', 'Saldo Vivver', 'Consumo Médio', 'Sugestão de Pedido']);
+
+            rows.forEach(row => {
+                const codigo = row.cells[0].textContent.trim();
+                const descricao = row.cells[1].textContent.trim();
+                const unidade = row.cells[2].textContent.trim();
+                const saldo = row.querySelector('input[data-field="saldo"]').value || 0;
+                const consumo = row.querySelector('input[data-field="consumo"]').value || 0;
+                const sugestao = row.querySelector('input[data-field="sugestao"]').value || 0;
+
+                allData.push([codigo, descricao, unidade, saldo, consumo, sugestao]);
+            });
+
+            allData.push(['', '', '', '', '', '']);
+        }
+
+        if (allData.length === 0) {
+            alert('Nenhum dado para enviar.');
+            return;
+        }
+
+        try {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('status').classList.add('hidden');
+
+            await gapi.client.sheets.spreadsheets.values.append({
+                spreadsheetId: 'YOUR_SPREADSHEET_ID',  // substitua aqui com seu ID da planilha
+                range: `PedidoCompleto!A1`,
+                valueInputOption: 'RAW',
+                insertDataOption: 'INSERT_ROWS',
+                resource: { values: allData }
+            });
+
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('status').classList.remove('hidden');
+            document.getElementById('status').innerText = `Pedido completo enviado com sucesso!`;
+            document.getElementById('status').classList.remove('text-red-600');
+            document.getElementById('status').classList.add('text-green-600');
+        } catch (err) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('status').classList.remove('hidden');
+            document.getElementById('status').innerText = `Erro ao enviar pedido completo: ${err.message}`;
+            document.getElementById('status').classList.remove('text-green-600');
+            document.getElementById('status').classList.add('text-red-600');
+            console.error('Erro ao enviar pedido completo para Google Sheets:', err);
+        }
+    }
+
+    // Gera o conteúdo HTML para download com os dados atuais
+    function gerarHtmlDoPedidoCompleto() {
+        const requestingUnit = document.getElementById('requestingUnit').value || '(não informado)';
+        const period = document.getElementById('period').value || '(não informado)';
+        const setores = Object.keys(data);
+
+        let htmlTables = '';
+
+        setores.forEach(tabKey => {
+            const tableBody = document.getElementById(`${tabKey}TableBody`);
+            if (!tableBody) return;
+            const rows = tableBody.querySelectorAll('tr');
+            if (rows.length === 0) return;
+
+            const responsibleInput = document.getElementById(`responsible${capitalizeFirstLetter(tabKey)}`);
+            const responsible = responsibleInput ? responsibleInput.value || '(não informado)' : '(não informado)';
+
+            htmlTables += `<h2 style="background-color:#f0f0f0; padding:10px;">${capitalizeFirstLetter(tabKey)}</h2>`;
+            htmlTables += `<p><strong>Responsável:</strong> ${responsible}</p>`;
+            htmlTables += `<p><strong>Unidade Solicitante:</strong> ${requestingUnit}</p>`;
+            htmlTables += `<p><strong>Período:</strong> ${period}</p>`;
+
+            htmlTables += `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">`;
+            htmlTables += `<thead><tr>
+                <th>Código SMAR</th>
+                <th>Descrição completa</th>
+                <th>Unidade de Medida</th>
+                <th>Saldo Vivver</th>
+                <th>Consumo Médio</th>
+                <th>Sugestão de Pedido</th>
+            </tr></thead><tbody>`;
+
+            rows.forEach(row => {
+                const codigo = row.cells[0].textContent.trim();
+                const descricao = row.cells[1].textContent.trim();
+                const unidade = row.cells[2].textContent.trim();
+                const saldo = row.querySelector('input[data-field="saldo"]').value || '0';
+                const consumo = row.querySelector('input[data-field="consumo"]').value || '0';
+                const sugestao = row.querySelector('input[data-field="sugestao"]').value || '0';
+
+                htmlTables += `<tr>
+                    <td>${codigo}</td>
+                    <td>${descricao}</td>
+                    <td>${unidade}</td>
+                    <td>${saldo}</td>
+                    <td>${consumo}</td>
+                    <td>${sugestao}</td>
+                </tr>`;
+            });
+
+            htmlTables += '</tbody></table>';
+        });
+
+        const htmlCompleto = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Pedido Completo - Download</title>
+    
+<style>
+table th:first-child,
+table td:first-child {
+    min-width: 240px !important;
+    white-space: nowrap;
+}
+table th, table td {
+    padding: 0.5rem 1rem;
+    text-align: left;
+    vertical-align: middle;
+}
+table {
+    min-width: 100%;
+    table-layout: auto;
+}
+table thead tr.bg-gray-200 th {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    background-color: #e5e7eb;
+    white-space: nowrap;
+}
+</style>
+
+</head>
+<body>
+    <h1>Pedido Completo</h1>
+    ${htmlTables}
+</body>
+</html>`;
+
+        return htmlCompleto;
+    }
+
+    // Baixa o pedido completo como arquivo HTML
+    function baixarPedidoCompleto() {
+        const conteudo = gerarHtmlDoPedidoCompleto();
+        const blob = new Blob([conteudo], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'pedido_completo.html';
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+
+    // Evento e inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+        // Renderiza todos os dados nas abas
+        Object.entries(data).forEach(([tabKey, items]) => renderTable(tabKey, items));
+
+        // Configura troca de abas
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => switchTab(button.dataset.tab));
+        });
+
+        // Inicializa API do Google Sheets
+        initGoogleSheets();
+
+        // Evento botão download
+        document.getElementById('downloadAllOrder').addEventListener('click', baixarPedidoCompleto);
+
+        // Aba padrão ativa
+        switchTab('farmacia');
+    });
+    </script>
+</body>
+</html>
