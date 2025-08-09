@@ -82,8 +82,17 @@ table thead tr.bg-gray-200 th {
                     <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="consumoLimpezaEsporadico">Consumo e Limpeza Esporádico</button>
                 </li>
                 <li class="mr-1">
-                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="impressosMateriaisEscritorio">Impressos e Materiais de Escritório</button>
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="impressos">Impressos</button>
                 </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="materiaisEscritorio">Materiais de Escritório</button>
+                </li>
+                <li class="mr-1">
+                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="epiConsumo">Epi-Consumo</button>
+                </li>
+
+
+
             </ul>
         </div>
 
@@ -322,19 +331,18 @@ table thead tr.bg-gray-200 th {
                         <tbody id="consumoLimpezaEsporadicoTableBody"></tbody>
                     </table>
                 </div>
-            </div>
-
-            <!-- Impressos e Materiais de Escritório -->
-            <div id="impressosMateriaisEscritorio" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-4">Impressos e Materiais de Escritório</h2>
+            </div></div>
+            <!-- Impressos -->
+            <div id="impressos" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Impressos</h2>
 
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">Responsável:</label>
-                    <input id="responsibleImpressosMateriaisEscritorio" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                    <input id="responsibleImpressos" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table id="impressosMateriaisEscritorioTable" class="min-w-full table-auto">
+                    <table id="impressosTable" class="min-w-full table-auto">
                         <thead>
                             <tr class="bg-gray-200">
                                 <th class="px-4 py-2 text-left">Código SMAR</th>
@@ -345,10 +353,63 @@ table thead tr.bg-gray-200 th {
                                 <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
                             </tr>
                         </thead>
-                        <tbody id="impressosMateriaisEscritorioTableBody"></tbody>
+                        <tbody id="impressosTableBody"></tbody>
                     </table>
                 </div>
             </div>
+            <!-- Materiais de Escritório -->
+            <div id="materiaisEscritorio" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Materiais de Escritório</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleMateriaisEscritorio" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="materiaisEscritorioTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="materiaisEscritorioTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Epi-Consumo -->
+            <div id="epiConsumo" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Epi-Consumo</h2>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+                    <input id="responsibleEpiConsumo" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="epiConsumoTable" class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left">Código SMAR</th>
+                                <th class="px-4 py-2 text-left">Descrição completa</th>
+                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                                <th class="px-4 py-2 text-left">Consumo Médio</th>
+                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody id="epiConsumoTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
 
         </div>
 
@@ -814,73 +875,8 @@ farmacia: [
         { codigo: "1 0120 0436 5", descricao: "TESTE RÁPIDO SARS-COV2 / INFLUENZA TIPO A, INFLUENZA TIPO B", unidade: "Unidade", saldo: 44, consumo: 280, sugestao: 236 },
         { codigo: "1 01 20 0428 4", descricao: "TESTE RÁPIDO ANTIGÊNICO PARA COVID-19", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 }
     ],
-enfermagemDST: [
-{ codigo: "1 01 20 0335 0", descricao: "Teste rápido (Anti Hcv) Alere", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0336 9", descricao: "Teste rápido (Anti Hep B)", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0334 2", descricao: "Teste rápido (Anti Hiv ) Alere", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0340 7", descricao: "Teste rápido Hiv - Abon", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0370 9", descricao: "Teste rápido Hiv - Bioclin", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0332 6", descricao: "Teste rápido Hiv - Biomanguinhos", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0409 8", descricao: "Teste rápido Hiv - Med Levensohn", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0333 4", descricao: "Teste rápido Hiv - Rapid Check", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0330 0", descricao: "Teste rápido Hiv F.O (frasco oral)", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0344 0", descricao: "Teste rápido sífilis - Alere", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0415 2", descricao: "Teste rápido sífilis - Bioclin", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0331 8", descricao: "Teste rápido sífilis - Biomanguinhos", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0405 5", descricao: "Teste rápido sífilis - Wama", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 01 20 0434 9", descricao: "Teste rápido Sífilis - Abon", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
-],
-
-enfermagemUrgenciaEmergencia: [
-{ codigo: "1 02 10 0001 6", descricao: "Cadarço fixador (Rolo c/ 50 metros)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0002 4", descricao: "Campo operatório estéril - pacote com 5 unidades", unidade: "Pacote", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0019 5", descricao: "Cânula de entubação c/ cuff nº 3,0", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0020 9", descricao: "Cânula de entubação c/ cuff nº 3,5 Unidade 0 Aguardar Aquisição Cânula de entubação c/ cuff nº 4,0", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0023 3", descricao: "Cânula de entubação c/ cuff nº 4,5", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0018 7", descricao: "Cânula de entubação c/ cuff nº 5,0", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0031 4", descricao: "Cânula de entubação c/ cuff nº 5,5", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0006 3", descricao: "Cânula de entubação c/ cuff nº 6,0", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0007 1", descricao: "Cânula de entubação c/ cuff nº 6,5", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0008 0", descricao: "Cânula de entubação c/ cuff nº 7,0", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0003 9", descricao: "Cânula de entubação c/ cuff nº 7,5", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0004 7", descricao: "Cânula de entubação c/ cuff nº 8,0", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 18 0001 2", descricao: "Cânula de guedel - conjunto", unidade: "Conjunto", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0003 2", descricao: "Cateter de O2 - tipo óculos", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 13 0004 4", descricao: "Cateter intravenoso periférico nº 14 - com NR32.", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 01 0012 2", descricao: "Cateter intravenoso periférico nº 16 - com NR32.", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 13 0001 0", descricao: "Cateter intravenoso periférico nº 18 - com NR32.", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 01 0013 0", descricao: "Cateter intravenoso periférico nº 20 - com NR32.", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 13 0002 8", descricao: "Cateter intravenoso periférico nº 22 - com NR32. Unidade 0ALMOXARIFADO OSS PIRANGI - PEDIDO MENSAL Enfermagem (Urgência e Emergência) *MÊS do Consumo JULHO (2025) Revisão A", unidade: "01/10/2019", saldo: 1, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 13 0003 6", descricao: "Cateter intravenoso periférico nº 24 - com NR32.", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0006 7", descricao: "Colar cervical G", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0005 9", descricao: "Colar cervical M", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0004 0", descricao: "Colar cervical P", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0033 4", descricao: "Eletrodo descartavel adulto - Cmos Drake", unidade: "Envelope", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0007 5", descricao: "Eletrodo descartável adulto p/ desfibrilador - Dea (Schiller)", unidade: "Envelope", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0039 3", descricao: "Eletrodo descartavel adulto/infantil - Philips", unidade: "Envelope", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0034 2", descricao: "Eletrodo descartavel infantil - Cmos Drake", unidade: "Envelope", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0016 4", descricao: "Eletrodo descartavel infantil para desfibrilador - Dea (Schiller)", unidade: "Envelope", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 12 0014 7", descricao: "Eletrodo p/ ecg pré-cordial em metal (ventosa)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 06 0013 3", descricao: "Extensor intermediario duas vias (polifix)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0009 1", descricao: "Mandril p/ entubação - adulto", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0010 5", descricao: "Mandril p/ entubação infantil", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 06 0020 6", descricao: "Solução cristaloide de ringer com lactato - bolsa 1.000 ml", unidade: "Bolsa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 06 0017 6", descricao: "Solução cristalóide de ringer com lactato - bolsa 500 ml", unidade: "Bolsa", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 06 0012 5", descricao: "Solução de glicose 5% bolsa/frasco de 250ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 07 0022 7", descricao: "Sonda aspiração traqueal nº 06 - c/ valvula", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 07 0024 3", descricao: "Sonda aspiração traqueal nº 10 - c/ valvula", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 07 0023 5", descricao: "Sonda aspiração traqueal nº 8 - c/ valvula", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 06 0016 8", descricao: "Soro fisiologico 0,9% injetável - frasco 1.000 ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 03 0020 2", descricao: "Soro fisiológico 0,9% injetável - frasco 500ml", unidade: "Frasco", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 06 0010 9", descricao: "Soro glicofisiológico a 5% - frasco de 500 ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 06 0018 4", descricao: "Soro glicosado a 5% bolsa /frasco 100 ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0013 0", descricao: "Tala p/ imobilização grande 86x10x2,5 cm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0012 1", descricao: "Tala p/ imobilização média 63x9x0,2 cm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0011 3", descricao: "Tala p/ imobilização pequena ( dedo ) 16x180 mm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 10 0057 1", descricao: "Tala p/ imobilização pequena (SAMU)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
-{ codigo: "1 02 06 0014 1", descricao: "Torneirinha 3 vias Unidade 0 Revisão A - 01/10/2019 2 Revisão A", unidade: "01/10/2019", saldo: 3, consumo: 0, sugestao: 0 },
-],
-
+        enfermagemDST: [],
+        enfermagemUrgenciaEmergencia: [],
 odonto: [
 { codigo: "1 07 01 0001 0", descricao: "Ácido condicionador para resina foto", unidade: "Frasco", saldo: 0, consumo: 1, sugestao: 1 },
 { codigo: "1 07 01 0002 9", descricao: "Agulha curta para anestesia para anestesia", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
@@ -1175,7 +1171,63 @@ consumoLimpezaPeriodico: [
 { codigo: "1 03 01 0051 6", descricao: "Sapólio em pó - frasco c/ 300 gramas", unidade: "Frasco", saldo: 0, consumo: 2, sugestao: 2 },
 { codigo: "1 03 02 0032 4", descricao: "Toalha de papel interfolhas branca - Pacote c/ 1000 Folhas", unidade: "Pacote", saldo: 0, consumo: 28, sugestao: 28 },
 ],
-        consumoLimpezaEsporadico: [],
+consumoLimpezaEsporadico: [
+{ codigo: "1 03 02 0036 7", descricao: "Assento sanitário", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0099 0", descricao: "Balde plástico com alça de metal - 12 litros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0003 6", descricao: "Balde plástico com alça de metal - 20 litros", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 0 },
+{ codigo: "1 03 02 0077 4", descricao: "Bateria 9 volts", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0088 0", descricao: "Bateria de lítio 1.5/1.55 v - tipo botão", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0087 1", descricao: "Bateria lithium 3 volts CR2032 -  para glicômetros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0004 4", descricao: "Cabeleira p/ mop", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0062 6", descricao: "Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 34 Litros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0061 8", descricao: "Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 54 Litros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0063 4", descricao: "Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 12 Litros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0044 8", descricao: "Canecão de alumínio com 2 litros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0005 7", descricao: "Canecão de alumínio com 4 litros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0148 7", descricao: "Cesto de lixo 10 litros - telado", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0146 0", descricao: "Cobertor de casal (Carrinho de Emergência)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0058 8", descricao: "Cobertor de solteiro (Carrinho de Emergência)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0009 5", descricao: "Corda de nylon para varal", unidade: "Unidade", saldo: 1, consumo: 1, sugestao: 0 },
+{ codigo: "1 03 01 0012 5", descricao: "Desentupidor de vaso sanitário", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0011 7", descricao: "Desentupidor de pia", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0067 2", descricao: "Dispenser - saboneteira", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0065 6", descricao: "Dispenser álcool gel", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0066 4", descricao: "Dispenser papel toalha", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0014 1", descricao: "Escova de cerdas plástica", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 0 },
+{ codigo: "1 03 01 0015 0", descricao: "Escova de nylon para limpeza sanitária", unidade: "Unidade", saldo: 0, consumo: 4, sugestao: 0 },
+{ codigo: "1 03 01 0070 2", descricao: "Extensor para vassoura e rodo de alumínio", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 0 },
+{ codigo: "1 03 02 0014 6", descricao: "Garrafa térmica - 1 litro", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 0 },
+{ codigo: "1 03 02 0015 4", descricao: "Garrafa térmica - 1,8 litros", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 0 },
+{ codigo: "1 03 02 0055 3", descricao: "Guardanapo de tecido para cozinha 60 x 40", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0016 2", descricao: "Jarra de 1 litro com medidor", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0017 0", descricao: "Jarra de 3 litros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0046 4", descricao: "Lâmpada comum 60 watts", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0086 3", descricao: "Lixeira plástica com pedal - 100 litros", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0023 0", descricao: "Lixeira plástica com pedal - 35 litros", unidade: "Unidade", saldo: 0, consumo: 4, sugestao: 0 },
+{ codigo: "1 03 02 0053 7", descricao: "Lixeira plástica com pedal - 60 litros", unidade: "Unidade", saldo: 0, consumo: 4, sugestao: 0 },
+{ codigo: "1 03 01 0069 9", descricao: "Lixeira plástica com tampa sem pedal (basculante)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0078 2", descricao: "Lixeira plástica sem pedal com tampa - 100 litros", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 0 },
+{ codigo: "1 03 01 0031 1", descricao: "Mangueira de borracha com gatilho e bico com 20 metros", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 0 },
+{ codigo: "1 03 01 0033 8", descricao: "Pá para lixo", unidade: "Unidade", saldo: 2, consumo: 1, sugestao: 0 },
+{ codigo: "1 03 02 0021 9", descricao: "Pilha grande D - pacote com 2 unidades", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0022 7", descricao: "Pilha média C - pacote com 2 unidades", unidade: "Unidade", saldo: 11, consumo: 4, sugestao: 0 },
+{ codigo: "1 03 02 0083 9", descricao: "Pilhas de dióxido de manganês de lítio tipo 123A", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0039 7", descricao: "Rodinho para pia", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0041 9", descricao: "Rodo de madeira c/ cabo, borracha dupla - 40 cm", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 0 },
+{ codigo: "1 03 01 0040 0", descricao: "Rodo de madeira c/ cabo, borracha dupla - 60 cm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0027 8", descricao: "Suporte para coador plástico nº 103", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 0 },
+{ codigo: "1 03 02 0042 1", descricao: "Suporte para copo água", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0060 5", descricao: "Suporte para cabeleira em alumínio (cabo para mop)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0048 0", descricao: "Suporte para copo de café", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0060 0", descricao: "Toalha de tecido de mesa quadrada 1,40 x 1,40 mt", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0057 0", descricao: "Toalha de tecido de mesa redonda 1,20 mt", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0031 6", descricao: "Toalha de tecido para rosto", unidade: "Unidade", saldo: 0, consumo: 6, sugestao: 0 },
+{ codigo: "1 03 02 0033 2", descricao: "Torneira para filtro", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 02 0034 0", descricao: "Vela para filtro", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+{ codigo: "1 03 01 0091 5", descricao: "Vassoura de nylon c/ cabo", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 0 },
+{ codigo: "1 03 01 0054 0", descricao: "Vassoura de pêlo c/ cabo de madeira", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 0 },
+{ codigo: "1 03 02 0050 2", descricao: "Vassoura para limpar teto", unidade: "Unidade", saldo: 2, consumo: 2, sugestao: 0 }
+],
         impressosMateriaisEscritorio: []
     };
 
