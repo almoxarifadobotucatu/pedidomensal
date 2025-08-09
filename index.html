@@ -81,19 +81,15 @@ table thead tr.bg-gray-200 th {
                 <li class="mr-1">
                     <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="consumoLimpezaEsporadico">Consumo e Limpeza Esporádico</button>
                 </li>
-                <li class="mr-1">
-                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="impressos">Impressos</button>
-                </li>
-                <li class="mr-1">
-                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="materiaisEscritorio">Materiais de Escritório</button>
-                </li>
-                <li class="mr-1">
-                    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="epiConsumo">Epi-Consumo</button>
-                </li>
+            
+<li class="mr-1">
+    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="impressos">Impressos</button>
+</li>
+<li class="mr-1">
+    <button class="tab-button bg-gray-200 px-4 py-2 font-semibold text-gray-700" data-tab="escritorio">Escritório</button>
+</li>
 
-
-
-            </ul>
+</ul>
         </div>
 
         <!-- Tab Content -->
@@ -331,87 +327,63 @@ table thead tr.bg-gray-200 th {
                         <tbody id="consumoLimpezaEsporadicoTableBody"></tbody>
                     </table>
                 </div>
-            </div></div>
-            <!-- Impressos -->
-            <div id="impressos" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-4">Impressos</h2>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
-                    <input id="responsibleImpressos" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table id="impressosTable" class="min-w-full table-auto">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="px-4 py-2 text-left">Código SMAR</th>
-                                <th class="px-4 py-2 text-left">Descrição completa</th>
-                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
-                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
-                                <th class="px-4 py-2 text-left">Consumo Médio</th>
-                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
-                            </tr>
-                        </thead>
-                        <tbody id="impressosTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-            <!-- Materiais de Escritório -->
-            <div id="materiaisEscritorio" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-4">Materiais de Escritório</h2>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
-                    <input id="responsibleMateriaisEscritorio" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table id="materiaisEscritorioTable" class="min-w-full table-auto">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="px-4 py-2 text-left">Código SMAR</th>
-                                <th class="px-4 py-2 text-left">Descrição completa</th>
-                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
-                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
-                                <th class="px-4 py-2 text-left">Consumo Médio</th>
-                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
-                            </tr>
-                        </thead>
-                        <tbody id="materiaisEscritorioTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-            <!-- Epi-Consumo -->
-            <div id="epiConsumo" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-4">Epi-Consumo</h2>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável:</label>
-                    <input id="responsibleEpiConsumo" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table id="epiConsumoTable" class="min-w-full table-auto">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="px-4 py-2 text-left">Código SMAR</th>
-                                <th class="px-4 py-2 text-left">Descrição completa</th>
-                                <th class="px-4 py-2 text-left">Unidade de Medida</th>
-                                <th class="px-4 py-2 text-left">Saldo Vivver</th>
-                                <th class="px-4 py-2 text-left">Consumo Médio</th>
-                                <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
-                            </tr>
-                        </thead>
-                        <tbody id="epiConsumoTableBody"></tbody>
-                    </table>
-                </div>
             </div>
 
+        
+<!-- Impressos -->
+<div id="impressos" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">Impressos</h2>
+
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+        <input id="responsibleImpressos" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+    </div>
+
+    <div class="overflow-x-auto">
+        <table id="impressosTable" class="min-w-full table-auto">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2 text-left">Código SMAR</th>
+                    <th class="px-4 py-2 text-left">Descrição completa</th>
+                    <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                    <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                    <th class="px-4 py-2 text-left">Consumo Médio</th>
+                    <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                </tr>
+            </thead>
+            <tbody id="impressosTableBody"></tbody>
+        </table>
+    </div>
+</div>
 
 
+<!-- Escritório -->
+<div id="escritorio" class="tab-pane hidden bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">Escritório</h2>
 
-        </div>
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Responsável:</label>
+        <input id="responsibleEscritorio" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+    </div>
+
+    <div class="overflow-x-auto">
+        <table id="escritorioTable" class="min-w-full table-auto">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2 text-left">Código SMAR</th>
+                    <th class="px-4 py-2 text-left">Descrição completa</th>
+                    <th class="px-4 py-2 text-left">Unidade de Medida</th>
+                    <th class="px-4 py-2 text-left">Saldo Vivver</th>
+                    <th class="px-4 py-2 text-left">Consumo Médio</th>
+                    <th class="px-4 py-2 text-left">Sugestão de Pedido</th>
+                </tr>
+            </thead>
+            <tbody id="escritorioTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+</div>
 
         <!-- Botões globais -->
         <div class="text-center mt-4">
@@ -1323,6 +1295,130 @@ impressos: [
 { codigo: "1 04 01 0016 0", descricao: "Registro de amostra do teste do pezinhO", unidade: "Bloco", saldo: 0, consumo: 0, sugestao: 0 },
 { codigo: "1 04 01 0014 4", descricao: "Resumo do atendimento do recém nascido", unidade: "Bloco", saldo: 0, consumo: 0, sugestao: 0 },
 { codigo: "1 04 01 0019 5", descricao: "Vigilância à saúde do recém-nascido de risco (preenchimento na maternidade)", unidade: "Bloco", saldo: 0, consumo: 0, sugestao: 0 },
+],
+  escritorio: [
+    { codigo: "1 05 01 0003 1", descricao: "Alfinete colorido", unidade: "Caixa", saldo: 0, consumo: 1, sugestao: 1 },
+    { codigo: "1 05 01 0153 4", descricao: "Almofada para carimbo nº 2 - azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0152 6", descricao: "Almofada para carimbo nº 3 - azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0002 3", descricao: "Almofada para carimbo nº 4 - azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0001 5", descricao: "Almofada para carimbo nº 4 - vermelha", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0004 0", descricao: "Apagador de madeira", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0005 8", descricao: "Apagador para quadro branco", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0006 6", descricao: "Apontador com depósito", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0148 8", descricao: "Barbante cor natural com 8 fios - rolo c/ 246 metros", unidade: "Rolo", saldo: 0, consumo: 1, sugestao: 1 },
+    { codigo: "1 05 01 0010 4", descricao: "Bloco para flip shart (50 folhas)", unidade: "Rolo", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0009 0", descricao: "Bobina de papel manilha", unidade: "Rolo", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0011 2", descricao: "Borracha branca (31mm x 21mm x 6mm)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0186 0", descricao: "Borracha branca com capa plástica", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0156 9", descricao: "Caderno brochura pequeno - 48 folhas", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+    { codigo: "1 05 01 0104 6", descricao: "Caderno espiral capa dura pequeno - 48 folhas", unidade: "Unidade", saldo: 0, consumo: 3, sugestao: 3 },
+    { codigo: "1 05 01 0012 0", descricao: "Caderno capa dura - 96 folhas", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+    { codigo: "1 05 01 0014 7", descricao: "Caderno espiral grande - 96 folhas", unidade: "Unidade", saldo: 0, consumo: 3, sugestao: 3 },
+    { codigo: "1 05 01 0016 3", descricao: "Caixa para arquivo em papelão", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0231 0", descricao: "Caixa para arquivo morto polionda azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0105 4", descricao: "Calculadora", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0017 1", descricao: "Caneta esferográfica ponta grossa - azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0018 0", descricao: "Caneta esferográfica ponta grossa - preta", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0019 8", descricao: "Caneta esferográfica ponta grossa - vermelha", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0021 0", descricao: "Caneta hidrocor - ( jogo 12 cores )", unidade: "Jogo", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0022 8", descricao: "Caneta marca texto luminoso - amarelo", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0023 6", descricao: "Caneta marca texto luminoso - verde", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0024 4", descricao: "Carbono folhas", unidade: "Folha", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 08 01 0003 0", descricao: "CD - RW- regravável", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0107 0", descricao: "Clips 4/0 - caixa com 500 gr", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0028 7", descricao: "Clips 6/0 - caixa com 500 gr", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0029 5", descricao: "Clips 8/0 - caixa com 500 gr", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0173 9", descricao: "Cola bastão branca 40 gr", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0186 0", descricao: "Cola bastão branca 08 gr", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0031 7", descricao: "Cola branca - frasco 40 gr", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0206 9", descricao: "Corretivo fita  4,2mm x 12 m - Seco", unidade: "Unidade", saldo: 0, consumo: 5, sugestao: 5 },
+    { codigo: "1 05 01 0162 3", descricao: "Corretivo fita  4mm x 45 m - Seco", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 08 01 0002 1", descricao: "DVD", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0033 3", descricao: "Elástico látex japonês - pacote c/ 100 gramas", unidade: "Pacote", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0034 1", descricao: "Envelope carta - cor branca", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0035 0", descricao: "Envelope ofício timbrado - cor branco", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0121 6", descricao: "Envelope pardo médio sem timbre", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0228 0", descricao: "Envelope pardo pequeno sem timbre", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0038 4", descricao: "Envelope pardo timbrado grande - 40 x 34mm", unidade: "Unidade", saldo: 0, consumo: 30, sugestao: 30 },
+    { codigo: "1 05 01 0037 6", descricao: "Envelope pardo timbrado médio - 35 x 26mm", unidade: "Unidade", saldo: 20, consumo: 40, sugestao: 20 },
+    { codigo: "1 05 01 0036 8", descricao: "Envelope pardo timbrado pequeno - 18 x 24,8mm", unidade: "Unidade", saldo: 0, consumo: 30, sugestao: 30 },
+    { codigo: "1 05 01 0039 2", descricao: "Espeto reto para papel", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0040 6", descricao: "Estilete profissional com lâmina de 18mm", unidade: "Unidade", saldo: 0, consumo: 1, sugestao: 1 },
+    { codigo: "1 05 01 0124 0", descricao: "Etiqueta para pasta (25,4MM x 66,7MM)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0142 9", descricao: "Etiqueta para pasta (25,4mm x 101,6 mm)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0123 2", descricao: "Etiqueta para pasta (33,9 MM x 101,6MM)", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0042 2", descricao: "Extrator de grampo - tipo espátula", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0122 4", descricao: "Extrator de grampo - tipo borboleta", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0047 3", descricao: "Fita adesiva empacotamento marrom - 48mm x 45 metros", unidade: "Rolo", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0048 1", descricao: "Fita adesiva empacotamento transparente larga - 48mm x 45 metros", unidade: "Rolo", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0043 0", descricao: "Fita crepe fina (19mm x 50 metros)", unidade: "Rolo", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0044 9", descricao: "Fita crepe larga (50mm x 50 metros)", unidade: "Rolo", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0051 1", descricao: "Fita métrica", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0045 7", descricao: "Fita transparente 12mm x 30m - Tipo durex pequeno", unidade: "Rolo", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0046 5", descricao: "Fita transparente 12mm x 65m - tipo durex grande", unidade: "Rolo", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 08 01 0008 0", descricao: "Formulário contínuo - 80 colunas (1ª via)", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 08 01 0006 4", descricao: "Formulário contínuo carbonado - 80 colunas", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0055 4", descricao: "Furador de papel - pequeno", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+    { codigo: "1 05 01 0054 6", descricao: "Furador de papel - grande", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0056 2", descricao: "Giz branco", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0146 1", descricao: "Giz de cera 12 cores", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0058 9", descricao: "Grampeador grande", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0059 7", descricao: "Grampeador pequeno para grampo 26/6", unidade: "Unidade", saldo: 0, consumo: 4, sugestao: 4 },
+    { codigo: "1 05 01 0061 9", descricao: "Grampo latonado tipo colchete nº 10 - caixa c/ 72 unidades", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0131 3", descricao: "Grampo p/grampeador, galvanizado, 26/6 - caixa c/ 5.000 unidades", unidade: "Caixa", saldo: 1, consumo: 4, sugestao: 3 },
+    { codigo: "1 05 01 0062 7", descricao: "Grampo trilho de 80 mm - caixa c/ 50 unidades", unidade: "Caixa", saldo: 0, consumo: 3, sugestao: 3 },
+    { codigo: "1 06 04 0028 3", descricao: "Lacre de segurança", unidade: "Unidade", saldo: 0, consumo: 12, sugestao: 12 },
+    { codigo: "1 05 01 0064 3", descricao: "Lápis de cor - jogo c/ 12 unidades", unidade: "Caixa", saldo: 0, consumo: 1, sugestao: 1 },
+    { codigo: "1 05 01 0063 5", descricao: "Lápis preto nº 2", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0066 0", descricao: "Livro ata com 50 folhas", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0068 6", descricao: "Livro protocolo", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0072 4", descricao: "Marcador para retroprojetor 2mm - azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0070 8", descricao: "Marcador para retroprojetor 2mm - preto", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0069 4", descricao: "Marcador para retroprojetor 2mm - verde", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0071 6", descricao: "Marcador para retroprojetor 2mm - vermelho", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0073 2", descricao: "Molhador de dedo", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0074 0", descricao: "Papel almaço com pauta", unidade: "Folha", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0075 9", descricao: "Papel sulfite A4 - 75mg/m2 (210 X 297) - pacote com 500 folhas", unidade: "Pacote", saldo: 0, consumo: 20, sugestao: 20 },
+    { codigo: "1 05 01 0077 5", descricao: "Pasta az oficio - estreita com visor", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0076 7", descricao: "Pasta az ofício - larga com visor", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0079 1", descricao: "Pasta catálogo com 30 plásticos", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0080 5", descricao: "Pasta de papelão com elástico", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0081 3", descricao: "Pasta de papelão com ferragem", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0084 8", descricao: "Pasta polionda plástica com elástico 2,5 cm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0085 6", descricao: "Pasta polionda plástica com elástico 3,5 cm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0086 4", descricao: "Pasta polionda plástica com elástico 5,5 cm preta", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0082 1", descricao: "Pasta suspensa", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0083 0", descricao: "Percevejo", unidade: "Caixa", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0087 2", descricao: "Pincel atômico azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0088 0", descricao: "Pincel atômico preto", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0090 2", descricao: "Pincel atômico verde", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0089 9", descricao: "Pincel atômico vermelho", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0093 7", descricao: "Pincel para quadro branco azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0095 3", descricao: "Pincel para quadro branco verde", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0094 5", descricao: "Pincel para quadro branco vermelho", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0096 1", descricao: "Pincel para quadro branco preto", unidade: "Unidade", saldo: 5, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0097 0", descricao: "Plástico para pasta catálogo 4 furos", unidade: "Unidade", saldo: 0, consumo: 20, sugestao: 20 },
+    { codigo: "1 05 01 0109 7", descricao: "Porta carimbo com 10 lugares", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0116 0", descricao: "Porta carimbo com 8 lugares", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0111 9", descricao: "Prancheta em madeira ou acrílico", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0149 6", descricao: "Quadro branco 120x90cm moldura alumínio", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0112 7", descricao: "Quadro de aviso em cortiça 900mm x 1200 mm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0147 0", descricao: "Quadro de lousa branca moldura alumínio 900mm x 600 mm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0144 5", descricao: "Quadro de aviso em cortiça 900mm x 600 mm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0136 4", descricao: "Régua plástica transparente - 30 cm", unidade: "Unidade", saldo: 0, consumo: 2, sugestao: 2 },
+    { codigo: "1 05 01 0098 8", descricao: "Régua plástica transparente - 40 cm", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0099 6", descricao: "Suporte durex - grande", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0155 0", descricao: "Suporte durex - pequeno", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0100 3", descricao: "Tarja amarela - tipo durex", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0103 8", descricao: "Tarja azul - tipo durex", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0101 1", descricao: "Tarja verde - tipo durex", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0102 0", descricao: "Tarja vermelha - tipo durex", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0113 5", descricao: "Tesoura grande", unidade: "Unidade", saldo: 0, consumo: 3, sugestao: 3 },
+    { codigo: "1 05 01 0114 3", descricao: "Tesoura pequena escolar", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0115 1", descricao: "Tinta para carimbo preta", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0092 9", descricao: "Tinta para carimbo vermelho", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0178 0", descricao: "Tinta para carimbo automático - cor preto - aproxima. 30ml", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
+    { codigo: "1 05 01 0091 0", descricao: "Tinta para carimbo azul", unidade: "Unidade", saldo: 0, consumo: 0, sugestao: 0 },
 ],
     };
 
