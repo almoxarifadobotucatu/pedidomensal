@@ -1042,7 +1042,7 @@ farmacia: [
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <title>Pedido Completo - Download</title>
+    <title>Pedido Mensal - Download</title>
     
 <style>
 table th:first-child,
@@ -1069,7 +1069,7 @@ table thead tr.bg-gray-200 th {
 
 </head>
 <body>
-    <h1>Pedido Completo</h1>
+    <h1 style="text-align: center; margin-top: 20px;">Pedido Mensal</h1>
     ${htmlTables}
 </body>
 </html>`;
@@ -1085,7 +1085,7 @@ table thead tr.bg-gray-200 th {
 
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'pedido_completo.html';
+        a.download = 'Pedido_Mensal.html';
         a.click();
 
         URL.revokeObjectURL(url);
