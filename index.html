@@ -419,9 +419,143 @@ table thead tr.bg-gray-200 th {
 
         <!-- Botões globais -->
         <div class="text-center mt-4">
-            <button id="downloadAllOrder" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 font-semibold">
-                Exportar Pedido Mensal
-            </button>
+            
+<!-- Botões globais -->
+<div class="text-center mt-4 space-x-2">
+    <button id="downloadAllOrder" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 font-semibold">
+        Exportar Pedido Mensal
+    </button>
+    <button id="saveProgress" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 font-semibold">
+        Salvar Progresso
+    </button>
+    <input type="file" id="loadProgressFile" class="hidden" accept=".json" />
+    <button id="loadProgress" class="bg-yellow-500 text-white px-6 py-3 rounded-md hover:bg-yellow-600 font-semibold">
+        Carregar Progresso
+    </button>
+</div>
+
+<script>
+(function(){
+  function getAllFormData() {
+    const data = {};
+    // inputs/textareas with id
+    document.querySelectorAll('input[id], textarea[id]').forEach(el => {
+      data[el.id] = el.value;
+    });
+    // select values
+    document.querySelectorAll('select[id]').forEach(el => {
+      data[el.id] = el.value;
+    });
+
+    // Tables: collect rows for each table with an id
+    document.querySelectorAll('table[id]').forEach(table => {
+      const tableId = table.id;
+      const rows = [];
+      table.querySelectorAll('tbody tr').forEach(tr => {
+        const cells = tr.querySelectorAll('td');
+        const rowObj = {};
+        rowObj.codigo = cells[0] ? cells[0].textContent.trim() : '';
+        rowObj.descricao = cells[1] ? cells[1].textContent.trim() : '';
+        rowObj.unidade = cells[2] ? cells[2].textContent.trim() : '';
+        const saldoInput = tr.querySelector('input[data-field=\"saldo\"]');
+        const consumoInput = tr.querySelector('input[data-field=\"consumo\"]');
+        const sugestaoInput = tr.querySelector('input[data-field=\"sugestao\"]');
+        rowObj.saldo = saldoInput ? saldoInput.value : (cells[3] ? cells[3].textContent.trim() : '');
+        rowObj.consumo = consumoInput ? consumoInput.value : (cells[4] ? cells[4].textContent.trim() : '');
+        rowObj.sugestao = sugestaoInput ? sugestaoInput.value : (cells[5] ? cells[5].textContent.trim() : '');
+        rows.push(rowObj);
+      });
+      data['table__' + tableId] = rows;
+    });
+
+    return data;
+  }
+
+  function setAllFormData(data) {
+    // set simple inputs by id
+    Object.keys(data).forEach(key => {
+      if (key.startsWith('table__')) return;
+      const el = document.getElementById(key);
+      if (el) {
+        try { el.value = data[key]; } catch(e) {}
+      }
+    });
+
+    // restore tables
+    Object.keys(data).forEach(key => {
+      if (!key.startsWith('table__')) return;
+      const tableId = key.replace('table__','');
+      const rowsData = data[key];
+      const table = document.getElementById(tableId);
+      if (!table) return;
+      const tbody = table.querySelector('tbody');
+      const trs = tbody ? Array.from(tbody.querySelectorAll('tr')) : [];
+      for (let i=0;i<rowsData.length;i++){
+        const rowData = rowsData[i];
+        const tr = trs[i];
+        if (!tr) continue;
+        const cells = tr.querySelectorAll('td');
+        if (cells[0]) cells[0].textContent = rowData.codigo || '';
+        if (cells[1]) cells[1].textContent = rowData.descricao || '';
+        if (cells[2]) cells[2].textContent = rowData.unidade || '';
+        const saldoInput = tr.querySelector('input[data-field=\"saldo\"]');
+        const consumoInput = tr.querySelector('input[data-field=\"consumo\"]');
+        const sugestaoInput = tr.querySelector('input[data-field=\"sugestao\"]');
+        if (saldoInput) saldoInput.value = rowData.saldo || '';
+        else if (cells[3]) cells[3].textContent = rowData.saldo || '';
+        if (consumoInput) consumoInput.value = rowData.consumo || '';
+        else if (cells[4]) cells[4].textContent = rowData.consumo || '';
+        if (sugestaoInput) sugestaoInput.value = rowData.sugestao || '';
+        else if (cells[5]) cells[5].textContent = rowData.sugestao || '';
+      }
+    });
+
+    // trigger input events to update calculated fields (if any)
+    setTimeout(()=> {
+      document.querySelectorAll('input').forEach(input=>{
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+    }, 50);
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=> {
+    const saveBtn = document.getElementById('saveProgress');
+    const loadBtn = document.getElementById('loadProgress');
+    const fileInput = document.getElementById('loadProgressFile');
+
+    if (saveBtn) saveBtn.addEventListener('click', ()=> {
+      const data = getAllFormData();
+      const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'pedido_mensal_progresso.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    if (loadBtn && fileInput) loadBtn.addEventListener('click', ()=> fileInput.click());
+    if (fileInput) fileInput.addEventListener('change', (e)=> {
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev)=> {
+        try {
+          const obj = JSON.parse(ev.target.result);
+          setAllFormData(obj);
+          alert('Progresso carregado com sucesso!');
+        } catch (err) {
+          alert('Erro ao carregar arquivo: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    });
+  });
+
+})(); 
+</script>
+
         </div>
 
         <!-- Loading and Status Messages -->
