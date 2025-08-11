@@ -31,15 +31,7 @@ table thead tr.bg-gray-200 th {
 </style>
 
 </head>
-
 <body class="bg-blue-50 font-sans">
-    <script>
-    // Bloqueio de acesso direto
-    if (localStorage.getItem("usuarioLogado") !== "true") {
-        window.location.href = "https://almoxarifadobotucatu.github.io/login/"; // Redireciona para a página de login
-    }
-    </script>
-
     <div class="container mx-auto p-4">
         <!-- Header Section -->
         <h1 class="text-3xl font-bold text-center mb-6">PEDIDO MENSAL</h1>
@@ -1856,14 +1848,84 @@ impressos: [
 
     // Gera o conteúdo HTML para download com os dados atuais
     function gerarHtmlDoPedidoCompleto() {
-        const requestingUnit = document.getElementById('requestingUnit').value || '(não informado)';
-        const period = document.getElementById('period').value || '(não informado)';
-        const setores = Object.keys(data);
+    // monta as tabelas (htmlTables) por setor
+    let htmlTables = '';
+    const nomesSetores = Object.keys(data);
+    nomesSetores.forEach((tabKey, index) => {
+        const items = data[tabKey] || [];
+        const responsibleInput = document.getElementById(`responsible${capitalizeFirstLetter(tabKey)}`);
+        const responsible = responsibleInput ? (responsibleInput.value || '') : '';
 
-        let htmlTables = '';
+        // começo do setor (envolvemos em div.page)
+        htmlTables += `<div class="page">`;
+        htmlTables += `<h2 style="margin:0 0 8px 0;">${capitalizeFirstLetter(tabKey)}</h2>`;
+        htmlTables += `<p style="margin:0 0 8px 0;"><strong>Responsável:</strong> ${responsible}</p>`;
+        htmlTables += `<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; width:100%; margin-bottom:12px;">`;
+        htmlTables += `<thead><tr style="background:#e5e7eb;"><th>Código SMAR</th><th>Descrição completa</th><th>Unidade de Medida</th><th>Saldo Vivver</th><th>Consumo Médio</th><th>Sugestão de Pedido</th></tr></thead>`;
+        htmlTables += `<tbody>`;
 
-        setores.forEach(tabKey => {
-            const tableBody = document.getElementById(`${tabKey}TableBody`);
+        const tableBody = document.getElementById(`${tabKey}TableBody`);
+        if (tableBody) {
+            const rows = tableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const codigo = row.cells[0] ? row.cells[0].textContent.trim() : '';
+                const descricao = row.cells[1] ? row.cells[1].textContent.trim() : '';
+                const unidade = row.cells[2] ? row.cells[2].textContent.trim() : '';
+                const saldoInput = row.querySelector('input[data-field="saldo"]');
+                const consumoInput = row.querySelector('input[data-field="consumo"]');
+                const sugestaoInput = row.querySelector('input[data-field="sugestao"]');
+                const saldo = saldoInput ? saldoInput.value : (row.cells[3] ? row.cells[3].textContent.trim() : '');
+                const consumo = consumoInput ? consumoInput.value : (row.cells[4] ? row.cells[4].textContent.trim() : '');
+                const sugestao = sugestaoInput ? sugestaoInput.value : (row.cells[5] ? row.cells[5].textContent.trim() : '');
+
+                htmlTables += `<tr>
+                    <td>${codigo}</td>
+                    <td>${descricao}</td>
+                    <td>${unidade}</td>
+                    <td>${saldo}</td>
+                    <td>${consumo}</td>
+                    <td>${sugestao}</td>
+                </tr>`;
+            });
+        }
+
+        htmlTables += `</tbody></table>`;
+        htmlTables += `</div>`;
+    });
+
+    // Head + CSS com regras de impressão
+    const htmlCompleto = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Pedido Mensal - Download</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; padding: 20px; }
+        table th, table td { text-align: left; vertical-align: top; }
+        .page { margin-bottom: 10px; }
+        @media print {
+            .page { 
+                page-break-after: always;
+                break-after: page;
+            }
+            h1 { page-break-after: avoid; }
+        }
+        .page { 
+            -webkit-column-break-after: always;
+            -moz-column-break-after: always;
+            column-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center; margin-bottom: 12px;">Pedido Mensal</h1>
+    ${htmlTables}
+</body>
+</html>`;
+
+    return htmlCompleto;
+}TableBody`);
             if (!tableBody) return;
             const rows = tableBody.querySelectorAll('tr');
             if (rows.length === 0) return;
